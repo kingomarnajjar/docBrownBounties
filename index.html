@@ -24,16 +24,16 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin-bottom: 10px;
             display: none;
-            animation: slide-up 0.5s ease-in-out;
+            animation: slide-up 10s linear forwards;
         }
         @keyframes slide-up {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
+            0% {
                 opacity: 1;
                 transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-1000px);
             }
         }
     </style>
@@ -118,9 +118,8 @@
                         <input type="text" id="disease-cured" name="disease-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
                     </div>
                     <div>
-                        <label for="name-cured" class="blockHere's the continuation and completion of the code with clearly separated sections and a live chat-style notification system for donations:
-
-```html
+                        <label for="name-cured```html
+                    <div>
                         <label for="name-cured" class="block text-gray-700 dark:text-gray-300">Your Name:</label>
                         <input type="text" id="name-cured" name="name-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
                     </div>
@@ -148,7 +147,7 @@
         </main>
     </div>
 
-    <div id="notifications-container" class="fixed bottom-0 left-0 z-50 flex flex-col-reverse p-4 space-y-2 space-y-reverse"></div>
+    <div id="notifications-container" class="fixed bottom-0 left-0 z-50 flex flex-col space-y-2 p-4"></div>
 
     <script>
         const fakeContributions = [
@@ -169,8 +168,8 @@
                 notification.style.opacity = '0';
                 setTimeout(() => {
                     notificationsContainer.removeChild(notification);
-                }, 500);
-            }, 5000);
+                }, 1000);
+            }, 10000);
         }
 
         function submitContribution() {
