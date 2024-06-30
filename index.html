@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc Brown's Prize Money for Medical Cures</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .section {
+            margin-bottom: 2em;
+            padding: 2em;
+            border-radius: 0.5em;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            display: none;
+            animation: slide-up 0.5s ease-in-out;
+        }
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-200 dark:bg-gray-800 flex flex-col items-center min-h-screen font-sans">
+    <div class="container mx-auto max-w-4xl px-6 py-12 bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+        <header class="text-center mb-8">
+            <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fimages4.fanpop.com%2Fimage%2Fphotos%2F23800000%2FDoc-Brown-back-to-the-future-23840617-635-958.jpg&f=1&nofb=1&ipt=365fe7be1ce67539f69cedc7795bf8e2fa6181120133e65553ec12dd605e460d&ipo=images" alt="Doc Brown" class="mx-auto mb-4 w-48 h-auto rounded-full shadow-lg">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">Doc Brown's Prize Money for Medical Cures</h1>
+            <p class="text-lg text-gray-700 dark:text-gray-300">Got a knack for curing the impossible? We've got a fat stack of cash waiting for you! Help us turn 'hopeless' into 'hell yeah!' and make a mint while you're at it.</p>
+        </header>
+        <main>
+            <section id="mission" class="section mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Our Mission</h2>
+                <p class="text-gray-700 dark:text-gray-300">
+                    Unleash your inner mad scientist and cash in on cures! We’re offering big bucks for big breakthroughs. If you’ve got the brains to beat diseases, we’ve got the bucks to make it worth your while.
+                </p>
+            </section>
+
+            <section id="pay-bounties" class="section mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Pay Bounties for Cures</h2>
+                <form id="contribute-form" class="space-y-4">
+                    <div>
+                        <label for="disease" class="block text-gray-700 dark:text-gray-300">Select a Disease:</label>
+                        <select id="disease" name="disease" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
+                            <option value="Alzheimer's Disease">Alzheimer's Disease</option>
+                            <option value="Amyotrophic Lateral Sclerosis (ALS)">Amyotrophic Lateral Sclerosis (ALS)</option>
+                            <option value="Huntington's Disease">Huntington's Disease</option>
+                            <option value="Cystic Fibrosis">Cystic Fibrosis</option>
+                            <option value="Parkinson's Disease">Parkinson's Disease</option>
+                            <option value="Multiple Sclerosis">Multiple Sclerosis</option>
+                            <option value="Type 1 Diabetes">Type 1 Diabetes</option>
+                            <option value="Chronic Kidney Disease">Chronic Kidney Disease</option>
+                            <option value="Cancer">Cancer</option>
+                            <option value="Crohn's Disease">Crohn's Disease</option>
+                            <option value="Cerebral Amyloid Angiopathy">Cerebral Amyloid Angiopathy</option>
+                            <option value="HIV/AIDS">HIV/AIDS</option>
+                            <option value="Lupus">Lupus</option>
+                            <option value="Marburg Virus">Marburg Virus</option>
+                            <option value="Ebola">Ebola</option>
+                            <option value="Fibrodysplasia Ossificans Progressiva">Fibrodysplasia Ossificans Progressiva</option>
+                            <option value="Graves' Disease">Graves' Disease</option>
+                            <option value="Herpes Simplex">Herpes Simplex</option>
+                            <option value="Polio">Polio</option>
+                            <option value="Pulmonary Hypertension">Pulmonary Hypertension</option>
+                            <option value="Rheumatoid Arthritis">Rheumatoid Arthritis</option>
+                            <option value="Schizophrenia">Schizophrenia</option>
+                            <option value="Scleroderma">Scleroderma</option>
+                            <option value="Spinocerebellar Ataxia">Spinocerebellar Ataxia</option>
+                            <option value="Systemic Lupus Erythematosus">Systemic Lupus Erythematosus</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="name" class="block text-gray-700 dark:text-gray-300">Name:</label>
+                        <input type="text" id="name" name="name" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-gray-700 dark:text-gray-300">Email:</label>
+                        <input type="email" id="email" name="email" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="amount" class="block text-gray-700 dark:text-gray-300">Contribution Amount ($):</label>
+                        <input type="number" id="amount" name="amount" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
+                    </div>
+                    <div class="flex justify-center">
+                        <a href="#" onclick="submitContribution()" class="relative">
+                            <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
+                            <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Contribute</span>
+                        </a>
+                    </div>
+                </form>
+                <div id="total-contributions" class="mt-6 text-center">
+                    <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100">Total Contributions for <span id="selected-disease">All Diseases</span>: $<span id="total-amount">0</span></h4>
+                </div>
+            </section>
+
+            <section id="cured-it" class="section mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">I Cured It</h2>
+                <form id="cure-form" class="space-y-4">
+                    <div>
+                        <label for="disease-cured" class="block text-gray-700 dark:text-gray-300">Disease Cured:</label>
+                        <input type="text" id="disease-cured" name="disease-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="name-cured" class="blockHere's the continuation and completion of the code with clearly separated sections and a live chat-style notification system for donations:
+
+```html
+                        <label for="name-cured" class="block text-gray-700 dark:text-gray-300">Your Name:</label>
+                        <input type="text" id="name-cured" name="name-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="email-cured" class="block text-gray-700 dark:text-gray-300">Email:</label>
+                        <input type="email" id="email-cured" name="email-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="description-cured" class="block text-gray-700 dark:text-gray-300">Description of the Cure:</label>
+                        <textarea id="description-cured" name="description-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all"></textarea>
+                    </div>
+                    <div class="flex justify-center">
+                        <a href="#" onclick="submitCure()" class="relative">
+                            <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
+                            <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Submit Cure</span>
+                        </a>
+                    </div>
+                </form>
+            </section>
+            
+            <section id="contact" class="section text-center">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Contact Us</h2>
+                <p class="text-gray-700 dark:text-gray-300">Email: info@docbrownsprizes.com</p>
+            </section>
+        </main>
+    </div>
+
+    <div id="notifications-container" class="fixed bottom-0 left-0 z-50 flex flex-col-reverse p-4 space-y-2 space-y-reverse"></div>
+
+    <script>
+        const fakeContributions = [
+            "Magic Mike contributed $69 for Alzheimer's Disease",
+            "Jane Doe contributed $150 for Multiple Sclerosis",
+            "John Smith contributed $200 for Cancer",
+            "Alice Wonderland contributed $85 for Parkinson's Disease"
+        ];
+
+        function showNotification(message) {
+            const notificationsContainer = document.getElementById('notifications-container');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerText = message;
+            notificationsContainer.appendChild(notification);
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    notificationsContainer.removeChild(notification);
+                }, 500);
+            }, 5000);
+        }
+
+        function submitContribution() {
+            const disease = document.getElementById('disease').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid contribution amount.');
+                return;
+            }
+
+            let totalAmount = parseFloat(document.getElementById('total-amount').innerText);
+            totalAmount += amount;
+            document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
+            document.getElementById('selected-disease').innerText = disease;
+
+            const contributionMessage = `${name} contributed $${amount.toFixed(2)} for ${disease}`;
+            showNotification(contributionMessage);
+
+            alert(`Thank you, ${name}, for your contribution of $${amount.toFixed(2)} towards ${disease} research!`);
+            document.getElementById('contribute-form').reset();
+        }
+
+        function submitCure() {
+            const diseaseCured = document.getElementById('disease-cured').value;
+            const nameCured = document.getElementById('name-cured').value;
+            const emailCured = document.getElementById('email-cured').value;
+            const descriptionCured = document.getElementById('description-cured').value;
+
+            if (diseaseCured === '' || nameCured === '' || emailCured === '' || descriptionCured === '') {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            alert(`Thank you, ${nameCured}, for submitting your cure for ${diseaseCured}! We will review your submission and get back to you shortly.`);
+            document.getElementById('cure-form').reset();
+        }
+
+        // Display fake contributions
+        fakeContributions.forEach((contribution, index) => {
+            setTimeout(() => {
+                showNotification(contribution);
+            }, index * 7000);
+        });
+    </script>
+</body>
+</html>
