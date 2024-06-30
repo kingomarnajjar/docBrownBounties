@@ -17,7 +17,7 @@
             bottom: 20px;
             left: 20px;
             z-index: 1000;
-            background-color: #333;
+            background-color: rgba(0, 255, 0, 0.533);   
             color: #fff;
             padding: 10px 20px;
             border-radius: 5px;
@@ -25,6 +25,7 @@
             margin-bottom: 10px;
             display: none;
             animation: slide-up 10s linear forwards;
+            font-size: large;
         }
         @keyframes slide-up {
             0% {
@@ -32,13 +33,78 @@
                 transform: translateY(0);
             }
             100% {
-                opacity: 0;
+                opacity: 1;
                 transform: translateY(-1000px);
             }
         }
+
+        #contributions-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    max-height: 80vh;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+#contributions-container::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+#contributions-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.contributions h3 {
+    margin-bottom: 1em;
+    font-size: 1.5em;
+    text-align: center;
+    color: #333;
+}
+
+.contributions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contributions li {
+    padding: 0.5em 0;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    color: #444;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.contributions li:last-child {
+    border-bottom: none;
+}
+
+.contributions li:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.contributions li .disease-name {
+    font-weight: bold;
+    color: #000;
+}
+
+.contributions li .amount {
+    font-weight: bold;
+    color: #007bff;
+}
+
     </style>
 </head>
-<body class="bg-gray-200 dark:bg-gray-800 flex flex-col items-center min-h-screen font-sans">
+<body class="bg-gray-100 dark:bg-gray flex flex-col items-center min-h-screen font-sans">
     <div class="container mx-auto max-w-4xl px-6 py-12 bg-white dark:bg-gray-900 shadow-lg rounded-lg">
         <header class="text-center mb-8">
             <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fimages4.fanpop.com%2Fimage%2Fphotos%2F23800000%2FDoc-Brown-back-to-the-future-23840617-635-958.jpg&f=1&nofb=1&ipt=365fe7be1ce67539f69cedc7795bf8e2fa6181120133e65553ec12dd605e460d&ipo=images" alt="Doc Brown" class="mx-auto mb-4 w-48 h-auto rounded-full shadow-lg">
@@ -54,7 +120,16 @@
             </section>
 
             <section id="pay-bounties" class="section mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Pay Bounties for Cures</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Donate or Invest Bounties for Cures</h2>
+                <p class="text-gray-700 dark:text-gray-300">
+                    Choose to either donate or invest. Donations help accelerate research and development, while investments give you a chance to earn a return if the cure is found.
+                </p>
+                <label for="contribution-type" class="block text-gray-700 dark:text-gray-300">Select Contribution Type:</label>
+                <select id="contribution-type" name="contribution-type" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all mb-4">
+                    <option value="Donate">Donate - Support Research</option>
+                    <option value="Invest">Invest - Potential ROI</option>
+                </select>
+                
                 <form id="contribute-form" class="space-y-4">
                     <div>
                         <label for="disease" class="block text-gray-700 dark:text-gray-300">Select a Disease:</label>
@@ -111,7 +186,7 @@
             </section>
 
             <section id="cured-it" class="section mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">I Cured It</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">I Cured It - Get Paid</h2>
                 <form id="cure-form" class="space-y-4">
                     <div>
                         <label for="disease-cured" class="block text-gray-700 dark:text-gray-300">Disease Cured:</label>
@@ -148,7 +223,46 @@
     </div>
 
     <div id="notifications-container" class="fixed bottom-0 left-0 z-50 flex flex-col space-y-2 p-4"></div>
+   
+    <div class="container mx-auto max-w-4xl px-6 py-12 bg-white dark:bg-gray-900 shadow-lg rounded-lg relative">
 
+    <div id="total-contributions" class="mt-6 text-center">
+        <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100">Total Contributions for <span id="selected-disease">All Diseases</span>: $<span id="total-amount">0</span></h4>
+    </div>
+</div>
+
+<div id="contributions-container" class="fixed top-20 right-20 z-50 flex flex-col space-y-2 p-4">
+    <div class="contributions">
+        <h3 class="text-lg font-bold mb-2">Contributions by Disease</h3>
+        <ul>
+            <li>Alzheimer's Disease: $<span id="alzheimers-amount">5000</span></li>
+            <li>Amyotrophic Lateral Sclerosis (ALS): $<span id="als-amount">3000</span></li>
+            <li>Huntington's Disease: $<span id="huntington-amount">2500</span></li>
+            <li>Cystic Fibrosis: $<span id="cf-amount">1500</span></li>
+            <li>Parkinson's Disease: $<span id="parkinsons-amount">3200</span></li>
+            <li>Multiple Sclerosis: $<span id="ms-amount">2700</span></li>
+            <li>Type 1 Diabetes: $<span id="diabetes-amount">1800</span></li>
+            <li>Chronic Kidney Disease: $<span id="kidney-amount">4000</span></li>
+            <li>Cancer: $<span id="cancer-amount">5500</span></li>
+            <li>Crohn's Disease: $<span id="crohns-amount">1300</span></li>
+            <li>Cerebral Amyloid Angiopathy: $<span id="caa-amount">1100</span></li>
+            <li>HIV/AIDS: $<span id="hiv-amount">4600</span></li>
+            <li>Lupus: $<span id="lupus-amount">2200</span></li>
+            <li>Marburg Virus: $<span id="marburg-amount">900</span></li>
+            <li>Ebola: $<span id="ebola-amount">3500</span></li>
+            <li>Fibrodysplasia Ossificans Progressiva: $<span id="fop-amount">800</span></li>
+            <li>Graves' Disease: $<span id="graves-amount">1700</span></li>
+            <li>Herpes Simplex: $<span id="herpes-amount">2100</span></li>
+            <li>Polio: $<span id="polio-amount">2400</span></li>
+            <li>Pulmonary Hypertension: $<span id="ph-amount">1600</span></li>
+            <li>Rheumatoid Arthritis: $<span id="ra-amount">2900</span></li>
+            <li>Schizophrenia: $<span id="schizo-amount">3100</span></li>
+            <li>Scleroderma: $<span id="sclero-amount">1400</span></li>
+            <li>Spinocerebellar Ataxia: $<span id="sca-amount">1200</span></li>
+            <li>Systemic Lupus Erythematosus: $<span id="sle-amount">2500</span></li>
+        </ul>
+    </div>
+</div>  
     <script>
         const fakeContributions = [
             "Magic Mike contributed $69 for Alzheimer's Disease",
@@ -216,6 +330,60 @@
                 showNotification(contribution);
             }, index * 7000);
         });
+
+        const diseaseAmounts = {
+        "Alzheimer's Disease": 5000,
+        "Amyotrophic Lateral Sclerosis (ALS)": 3000,
+        "Huntington's Disease": 2500,
+        "Cystic Fibrosis": 1500,
+        "Parkinson's Disease": 3200,
+        "Multiple Sclerosis": 2700,
+        "Type 1 Diabetes": 1800,
+        "Chronic Kidney Disease": 4000,
+        "Cancer": 5500,
+        "Crohn's Disease": 1300,
+        "Cerebral Amyloid Angiopathy": 1100,
+        "HIV/AIDS": 4600,
+        "Lupus": 2200,
+        "Marburg Virus": 900,
+        "Ebola": 3500,
+        "Fibrodysplasia Ossificans Progressiva": 800,
+        "Graves' Disease": 1700,
+        "Herpes Simplex": 2100,
+        "Polio": 2400,
+        "Pulmonary Hypertension": 1600,
+        "Rheumatoid Arthritis": 2900,
+        "Schizophrenia": 3100,
+        "Scleroderma": 1400,
+        "Spinocerebellar Ataxia": 1200,
+        "Systemic Lupus Erythematosus": 2500
+    };
+
+    function submitContribution() {
+        const disease = document.getElementById('disease').value;
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+
+        if (isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid contribution amount.');
+            return;
+        }
+
+        let totalAmount = parseFloat(document.getElementById('total-amount').innerText);
+        totalAmount += amount;
+        document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
+        document.getElementById('selected-disease').innerText = disease;
+
+        diseaseAmounts[disease] += amount;
+        document.getElementById(disease.toLowerCase().replace(/ /g, '-').replace(/[\(\)]/g, '') + '-amount').innerText = diseaseAmounts[disease];
+
+        const contributionMessage = `${name} contributed $${amount.toFixed(2)} for ${disease}`;
+        showNotification(contributionMessage);
+
+        alert(`Thank you, ${name}, for your contribution of $${amount.toFixed(2)} towards ${disease} research!`);
+        document.getElementById('contribute-form').reset();
+    }
     </script>
 </body>
 </html>
