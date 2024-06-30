@@ -12,6 +12,9 @@
             border-radius: 0.5em;
             background-color: rgba(255, 255, 255, 0.9);
         }
+        .hidden {
+            display: none;
+        }
         .notification {
             position: fixed;
             bottom: 20px;
@@ -119,6 +122,17 @@
                 </p>
             </section>
 
+            <div class="flex justify-center space-x-4 mb-4">
+                <button onclick="showSection('pay-bounties')" class="relative">
+                    <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
+                    <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Donate/Invest</span>
+                </button>
+                <button onclick="showSection('cured-it')" class="relative">
+                    <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
+                    <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Get Paid I Cured It</span>
+                </button>
+            </div>
+
             <section id="pay-bounties" class="section mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Donate or Invest Bounties for Cures</h2>
                 <p class="text-gray-700 dark:text-gray-300">
@@ -185,15 +199,13 @@
                 </div>
             </section>
 
-            <section id="cured-it" class="section mb-8">
+            <section id="cured-it" class="section mb-8 hidden">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">I Cured It - Get Paid</h2>
                 <form id="cure-form" class="space-y-4">
                     <div>
                         <label for="disease-cured" class="block text-gray-700 dark:text-gray-300">Disease Cured:</label>
                         <input type="text" id="disease-cured" name="disease-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
                     </div>
-                    <div>
-                        <label for="name-cured```html
                     <div>
                         <label for="name-cured" class="block text-gray-700 dark:text-gray-300">Your Name:</label>
                         <input type="text" id="name-cured" name="name-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
@@ -226,9 +238,7 @@
    
     <div class="container mx-auto max-w-4xl px-6 py-12 bg-white dark:bg-gray-900 shadow-lg rounded-lg relative">
 
-    <div id="total-contributions" class="mt-6 text-center">
-        <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100">Total Contributions for <span id="selected-disease">All Diseases</span>: $<span id="total-amount">0</span></h4>
-    </div>
+   
 </div>
 
 <div id="contributions-container" class="fixed top-20 right-20 z-50 flex flex-col space-y-2 p-4">
@@ -383,6 +393,12 @@
 
         alert(`Thank you, ${name}, for your contribution of $${amount.toFixed(2)} towards ${disease} research!`);
         document.getElementById('contribute-form').reset();
+    }
+
+    function showSection(sectionId) {
+        document.getElementById('pay-bounties').classList.add('hidden');
+        document.getElementById('cured-it').classList.add('hidden');
+        document.getElementById(sectionId).classList.remove('hidden');
     }
     </script>
 </body>
