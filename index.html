@@ -42,69 +42,74 @@
         }
 
         #contributions-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    max-height: 80vh;
-    overflow-y: auto;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
-}
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            scrollbar-width: none; /* For Firefox */
+            -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+        }
 
-#contributions-container::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Opera */
-}
+        #contributions-container::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari, and Opera */
+        }
 
-#contributions-container:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
+        #contributions-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
 
-.contributions h3 {
-    margin-bottom: 1em;
-    font-size: 1.5em;
-    text-align: center;
-    color: #333;
-}
+        .contributions h3 {
+            margin-bottom: 1em;
+            font-size: 1.5em;
+            text-align: center;
+            color: #333;
+        }
 
-.contributions ul {
-    list-style: none;
-    padding: 0;
-}
+        .contributions ul {
+            list-style: none;
+            padding: 0;
+        }
 
-.contributions li {
-    padding: 0.5em 0;
-    border-bottom: 1px solid #ccc;
-    display: flex;
-    justify-content: space-between;
-    color: #444;
-    transition: background-color 0.3s ease-in-out;
-}
+        .contributions li {
+            padding: 0.5em 0;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            color: #444;
+            transition: background-color 0.3s ease-in-out;
+        }
 
-.contributions li:last-child {
-    border-bottom: none;
-}
+        .contributions li:last-child {
+            border-bottom: none;
+        }
 
-.contributions li:hover {
-    background-color: rgba(0, 123, 255, 0.1);
-}
+        .contributions li:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
 
-.contributions li .disease-name {
-    font-weight: bold;
-    color: #000;
-}
+        .contributions li .disease-name {
+            font-weight: bold;
+            color: #000;
+        }
 
-.contributions li .amount {
-    font-weight: bold;
-    color: #007bff;
-}
+        .contributions li .amount {
+            font-weight: bold;
+            color: #007bff;
+        }
 
+        @media (max-width: 768px) {
+            #contributions-container {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray flex flex-col items-center min-h-screen font-sans">
@@ -238,7 +243,9 @@
    
     <div class="container mx-auto max-w-4xl px-6 py-12 bg-white dark:bg-gray-900 shadow-lg rounded-lg relative">
 
-   
+    <div id="total-contributions" class="mt-6 text-center">
+        <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100">Total Contributions for <span id="selected-disease">All Diseases</span>: $<span id="total-amount">0</span></h4>
+    </div>
 </div>
 
 <div id="contributions-container" class="fixed top-20 right-20 z-50 flex flex-col space-y-2 p-4">
@@ -273,6 +280,44 @@
         </ul>
     </div>
 </div>  
+<nav class="bg-white dark:bg-gray-900 shadow-md fixed top-0 left-0 w-full z-50">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between">
+            <div class="flex space-x-4">
+                <!-- Logo -->
+                <div>
+                    <a href="#" class="flex items-center py-5 px-2 text-gray-700 dark:text-gray-300">
+                        <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fimages4.fanpop.com%2Fimage%2Fphotos%2F23800000%2FDoc-Brown-back-to-the-future-23840617-635-958.jpg&f=1&nofb=1&ipt=365fe7be1ce67539f69cedc7795bf8e2fa6181120133e65553ec12dd605e460d&ipo=images" alt="Logo" class="h-8 w-8 mr-2">
+                        <span class="font-bold">Doc Brown's Prizes</span>
+                    </a>
+                </div>
+                <!-- Primary Navbar items -->
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="#pay-bounties" class="py-5 px-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Donate/Invest</a>
+                    <a href="#cured-it" class="py-5 px-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Get Paid</a>
+                </div>
+            </div>
+            <!-- Secondary Navbar items -->
+            <div class="hidden md:flex items-center space-x-1">
+                <a href="#contributions-container" class="py-5 px-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Contributions</a>
+            </div>
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button">
+                    <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- mobile menu -->
+    <div class="mobile-menu hidden md:hidden">
+        <a href="#pay-bounties" class="block py-2 px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-700">Donate/Invest</a>
+        <a href="#cured-it" class="block py-2 px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-700">Get Paid</a>
+        <a href="#contributions-container" class="block py-2 px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-700">Contributions</a>
+    </div>
+</nav>
     <script>
         const fakeContributions = [
             "Magic Mike contributed $69 for Alzheimer's Disease",
@@ -400,6 +445,13 @@
         document.getElementById('cured-it').classList.add('hidden');
         document.getElementById(sectionId).classList.remove('hidden');
     }
+
+    const btn = document.querySelector("button.mobile-menu-button");
+    const menu = document.querySelector(".mobile-menu");
+
+    btn.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+    });
     </script>
 </body>
 </html>
