@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doc Brown's Prize Money for Medical Cures</title>
+    <title>Radical Prize Money for Medical Cures</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .section {
             margin-bottom: 2em;
@@ -20,30 +21,20 @@
             bottom: 20px;
             left: 20px;
             z-index: 1000;
-            background-color: rgba(0, 255, 0, 0.533);   
+            background-color: black;   
             color: #fff;
             padding: 10px 20px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             margin-bottom: 10px;
             display: none;
-            animation: slide-up 10s linear forwards;
             font-size: large;
-        }
-        @keyframes slide-up {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(-1000px);
-            }
+            transition: transform 0.5s ease, opacity 0.5s ease;
         }
 
         #contributions-container {
             position: fixed;
-            top: 20px;
+            top: 80px;
             right: 20px;
             z-index: 1000;
             background-color: rgba(255, 255, 255, 0.9);
@@ -65,70 +56,150 @@
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-
-        .contributions h3 {
-            margin-bottom: 1em;
-            font-size: 1.5em;
-            text-align: center;
-            color: #333;
+        
+        .pulse-button {
+            animation: pulse 2s infinite;
         }
-
-        .contributions ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .contributions li {
-            padding: 0.5em 0;
-            border-bottom: 1px solid #ccc;
-            display: flex;
-            justify-content: space-between;
-            color: #444;
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        .contributions li:last-child {
-            border-bottom: none;
-        }
-
-        .contributions li:hover {
-            background-color: rgba(0, 123, 255, 0.1);
-        }
-
-        .contributions li .disease-name {
-            font-weight: bold;
-            color: #000;
-        }
-
-        .contributions li .amount {
-            font-weight: bold;
-            color: #007bff;
-        }
-
-        @media (max-width: 768px) {
-            #contributions-container {
-                display: none;
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.7);
             }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 204, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 204, 0, 0);
+            }
+        }
+        
+        .max-h-90vh {
+            max-height: 90vh;
+        }
+        
+        /* Dark mode adjustments */
+        .dark-mode {
+            background-color: #121212;
+            color: #f1f1f1;
+        }
+        
+        .dark-mode .section {
+            background-color: rgba(30, 30, 30, 0.9);
+        }
+        
+        .dark-mode #contributions-container {
+            background-color: rgba(30, 30, 30, 0.9);
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Crypto option styling */
+        .crypto-option {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .crypto-option:hover {
+            border-color: #4f46e5;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .crypto-logo {
+            width: 24px;
+            height: 24px;
+            margin-right: 0.5rem;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: lightgreen;
+            border-radius: 10px;
+            transition: width 0.5s ease;
         }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray flex flex-col items-center min-h-screen font-sans">
-    <div class="container mx-auto max-w-4xl px-6 py-12 bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+<body class="bg-gray-100 flex flex-col items-center min-h-screen font-sans">
+    <!-- Dark mode toggle -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="dark-mode-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+    <div class="fixed top-4 left-4 z-50 flex space-x-2">
+        <button id="generate-demo-data" class="p-2 rounded-md bg-green-500 text-white hover:bg-green-600 transition-colors">
+          Generate Demo Data
+        </button>
+        <button id="reset-demo-data" class="p-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors">
+          Reset All Data
+        </button>
+      </div>
+
+    <div class="container mx-auto max-w-4xl px-6 py-12 bg-white shadow-lg rounded-lg mt-16">
         <header class="text-center mb-8">
-            <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fimages4.fanpop.com%2Fimage%2Fphotos%2F23800000%2FDoc-Brown-back-to-the-future-23840617-635-958.jpg&f=1&nofb=1&ipt=365fe7be1ce67539f69cedc7795bf8e2fa6181120133e65553ec12dd605e460d&ipo=images" alt="Doc Brown" class="mx-auto mb-4 w-48 h-auto rounded-full shadow-lg">
-            <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">Doc Brown's Prize Money for Medical Cures</h1>
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">Radical Prize Money for Medical Cures</h1>
             <p class="text-lg text-gray-700 dark:text-gray-300">Got a knack for curing the impossible? We've got a fat stack of cash waiting for you! Help us turn 'hopeless' into 'hell yeah!' and make a mint while you're at it.</p>
         </header>
         <main>
             <section id="mission" class="section mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Our Mission</h2>
                 <p class="text-gray-700 dark:text-gray-300">
-                    Unleash your inner mad scientist and cash in on cures! We’re offering big bucks for big breakthroughs. If you’ve got the brains to beat diseases, we’ve got the bucks to make it worth your while.
+                    Unleash your inner mad scientist and cash in on cures! We're offering big bucks for big breakthroughs. If you've got the brains to beat diseases, we've got the bucks to make it worth your while.
                 </p>
+                
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">How It Works</h3>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1 p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <span class="w-8 h-8 flex items-center justify-center bg-yellow-400 text-white rounded-full mr-2">1</span>
+                                <h4 class="font-bold">Donate or Invest</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Choose to either donate to support research or invest for potential returns when cures are found.</p>
+                        </div>
+                        <div class="flex-1 p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <span class="w-8 h-8 flex items-center justify-center bg-yellow-400 text-white rounded-full mr-2">2</span>
+                                <h4 class="font-bold">Scientists Work</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Talented researchers and Venture capitalists invest their own time and money to CHASE after the LOCKED prize money. They develop new treatments and potential cures for diseases.</p>
+                        </div>
+                        <div class="flex-1 p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <span class="w-8 h-8 flex items-center justify-center bg-yellow-400 text-white rounded-full mr-2">3</span>
+                                <h4 class="font-bold">Cures & Rewards</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Successful cures receive prize money, and investors get returns proportional to their contribution.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <div class="flex justify-center space-x-4 mb-4">
-                <button onclick="showSection('pay-bounties')" class="relative">
+                <button onclick="showSection('pay-bounties')" class="relative pulse-button">
                     <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
                     <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Donate/Invest</span>
                 </button>
@@ -136,13 +207,28 @@
                     <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
                     <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Get Paid I Cured It</span>
                 </button>
+                <button onclick="showSection('user-dashboard')" class="relative">
+                    <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
+                    <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">My Dashboard</span>
+                </button>
             </div>
 
             <section id="pay-bounties" class="section mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Donate or Invest Bounties for Cures</h2>
-                <p class="text-gray-700 dark:text-gray-300">
+                <p class="text-gray-700 dark:text-gray-300 mb-4">
                     Choose to either donate or invest. Donations help accelerate research and development, while investments give you a chance to earn a return if the cure is found.
                 </p>
+                
+                <!-- Disease Statistics -->
+                <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Current Prize Pool</h3>
+                    <div id="selected-disease-stats" class="mb-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-medium">Select a disease to see details</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <label for="contribution-type" class="block text-gray-700 dark:text-gray-300">Select Contribution Type:</label>
                 <select id="contribution-type" name="contribution-type" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all mb-4">
                     <option value="Donate">Donate - Support Research</option>
@@ -192,16 +278,104 @@
                         <label for="amount" class="block text-gray-700 dark:text-gray-300">Contribution Amount ($):</label>
                         <input type="number" id="amount" name="amount" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
                     </div>
+                    
+                    <!-- Payment Method Selection -->
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Select Payment Method:</label>
+                        <div class="flex flex-wrap gap-4">
+                            <div class="payment-option flex-1 min-w-[200px] p-4 border rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-all" data-payment="credit-card">
+                                <div class="flex items-center">
+                                    <i class="fas fa-credit-card text-2xl mr-3 text-blue-500"></i>
+                                    <div>
+                                        <h4 class="font-bold">Credit Card</h4>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Secure payment via Stripe</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="payment-option flex-1 min-w-[200px] p-4 border rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-all" data-payment="crypto">
+                                <div class="flex items-center">
+                                    <i class="fab fa-bitcoin text-2xl mr-3 text-orange-500"></i>
+                                    <div>
+                                        <h4 class="font-bold">Cryptocurrency</h4>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">BTC, ETH, USDC & more</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Credit Card Payment Form (Hidden by default) -->
+                    <div id="credit-card-form" class="hidden">
+                        <div class="p-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
+                            <h4 class="font-bold mb-3">Credit Card Details</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-gray-700 dark:text-gray-300 text-sm mb-1">Card Number</label>
+                                    <div id="card-number-element" class="p-3 border rounded bg-white dark:bg-gray-900"></div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="flex-1">
+                                        <label class="block text-gray-700 dark:text-gray-300 text-sm mb-1">Expiration Date</label>
+                                        <div id="card-expiry-element" class="p-3 border rounded bg-white dark:bg-gray-900"></div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <label class="block text-gray-700 dark:text-gray-300 text-sm mb-1">CVC</label>
+                                        <div id="card-cvc-element" class="p-3 border rounded bg-white dark:bg-gray-900"></div>
+                                    </div>
+                                </div>
+                                <div id="card-errors" class="text-red-500 text-sm mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Crypto Payment Options (Hidden by default) -->
+                    <div id="crypto-form" class="hidden">
+                        <div class="p-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
+                            <h4 class="font-bold mb-3">Select Cryptocurrency</h4>
+                            <div class="space-y-2">
+                                <div class="crypto-option cursor-pointer" data-crypto="bitcoin">
+                                    <div class="flex items-center">
+                                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" class="crypto-logo">
+                                        <span>Bitcoin (BTC)</span>
+                                    </div>
+                                </div>
+                                <div class="crypto-option cursor-pointer" data-crypto="ethereum">
+                                    <div class="flex items-center">
+                                        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" class="crypto-logo">
+                                        <span>Ethereum (ETH)</span>
+                                    </div>
+                                </div>
+                                <div class="crypto-option cursor-pointer" data-crypto="usdc">
+                                    <div class="flex items-center">
+                                        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" class="crypto-logo">
+                                        <span>USD Coin (USDC)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="crypto-payment-details" class="mt-4 hidden">
+                                <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                    <p class="text-sm mb-2 font-bold">Send <span id="crypto-amount">0.0</span> <span id="crypto-currency">BTC</span> to:</p>
+                                    <div class="flex items-center">
+                                        <input id="crypto-address" type="text" value="bc1q..." class="flex-1 p-2 rounded-l bg-white dark:bg-gray-900 text-sm" disabled>
+                                        <button id="copy-address" class="bg-blue-500 text-white px-3 py-2 rounded-r" title="Copy address">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">Transaction will be confirmed automatically.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="flex justify-center">
-                        <a href="#" onclick="submitContribution()" class="relative">
+                        <button type="submit" id="contribute-button" class="relative">
                             <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
                             <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Contribute</span>
-                        </a>
+                        </button>
                     </div>
                 </form>
-                <div id="total-contributions" class="mt-6 text-center">
-                    <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100">Total Contributions for <span id="selected-disease">All Diseases</span>: $<span id="total-amount">0</span></h4>
-                </div>
             </section>
 
             <section id="cured-it" class="section mb-8 hidden">
@@ -221,15 +395,93 @@
                     </div>
                     <div>
                         <label for="description-cured" class="block text-gray-700 dark:text-gray-300">Description of the Cure:</label>
-                        <textarea id="description-cured" name="description-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all"></textarea>
+                        <textarea id="description-cured" name="description-cured" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all" rows="4"></textarea>
+                    </div>
+                    <div>
+                        <label for="evidence-files" class="block text-gray-700 dark:text-gray-300">Supporting Evidence (Research papers, data, etc.):</label>
+                        <input type="file" id="evidence-files" name="evidence-files" multiple class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="payment-address" class="block text-gray-700 dark:text-gray-300">Payment Address (Bank account or Crypto wallet):</label>
+                        <input type="text" id="payment-address" name="payment-address" required class="w-full p-3 rounded-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
                     </div>
                     <div class="flex justify-center">
-                        <a href="#" onclick="submitCure()" class="relative">
+                        <button type="submit" class="relative">
                             <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
                             <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Submit Cure</span>
-                        </a>
+                        </button>
                     </div>
                 </form>
+            </section>
+            
+            <section id="user-dashboard" class="section mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">User Dashboard</h2>
+                
+                <div class="mb-6">
+                    <label for="dashboard-email" class="block text-gray-700 dark:text-gray-300">Enter your email to view your activity:</label>
+                    <div class="flex mt-2">
+                      <input type="email" id="dashboard-email" class="flex-grow p-3 rounded-l-md text-gray-800 dark:text-gray-300 bg-white dark:bg-gray-900 border-2 border-gray-500 focus:border-blue-400 focus:outline-none transition-all">
+                      <button id="dashboard-submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 transition-colors">View</button>
+                    </div>
+                    <div class="mt-2">
+                      <button id="use-demo-email" class="text-sm text-blue-500 hover:text-blue-700">Use demo@example.com for testing</button>
+                    </div>
+                  </div>
+                
+                <div id="dashboard-content" class="hidden">
+                    <!-- Dashboard summary cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold mb-2">Total Contributions</h3>
+                            <p class="text-3xl font-bold" id="dashboard-total">$0</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold mb-2">Investments</h3>
+                            <p class="text-3xl font-bold" id="dashboard-investments">$0</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold mb-2">Donations</h3>
+                            <p class="text-3xl font-bold" id="dashboard-donations">$0</p>
+                        </div>
+                    </div>
+                    
+                    <div id="user-contributions" class="mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Your Contributions</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b">Date</th>
+                                        <th class="py-2 px-4 border-b">Disease</th>
+                                        <th class="py-2 px-4 border-b">Type</th>
+                                        <th class="py-2 px-4 border-b">Amount</th>
+                                        <th class="py-2 px-4 border-b">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="contributions-tbody"></tbody>
+                            </table>
+                        </div>
+                        <p id="no-contributions" class="text-gray-600 dark:text-gray-400 italic mt-2 hidden">No contributions found.</p>
+                    </div>
+                    
+                    <div id="user-submissions" class="mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Your Cure Submissions</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b">Date</th>
+                                        <th class="py-2 px-4 border-b">Disease</th>
+                                        <th class="py-2 px-4 border-b">Status</th>
+                                        <th class="py-2 px-4 border-b">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="submissions-tbody"></tbody>
+                            </table>
+                        </div>
+                        <p id="no-submissions" class="text-gray-600 dark:text-gray-400 italic mt-2 hidden">No submissions found.</p>
+                    </div>
+                </div>
             </section>
             
             <section id="contact" class="section text-center">
@@ -240,92 +492,967 @@
     </div>
 
     <div id="notifications-container" class="fixed bottom-0 left-0 z-50 flex flex-col space-y-2 p-4"></div>
-   
-    <div class="container mx-auto max-w-4xl px-6 py-12 bg-white dark:bg-gray-900 shadow-lg rounded-lg relative">
 
-    <div id="total-contributions" class="mt-6 text-center">
-        <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100">Total Contributions for <span id="selected-disease">All Diseases</span>: $<span id="total-amount">0</span></h4>
-    </div>
-</div>
-
-<div id="contributions-container" class="fixed top-20 right-20 z-50 flex flex-col space-y-2 p-4">
-    <div class="contributions">
-        <h3 class="text-lg font-bold mb-2">Contributions by Disease</h3>
-        <ul>
-            <li>Alzheimer's Disease: $<span id="alzheimers-amount">5000</span></li>
-            <li>Amyotrophic Lateral Sclerosis (ALS): $<span id="als-amount">3000</span></li>
-            <li>Huntington's Disease: $<span id="huntington-amount">2500</span></li>
-            <li>Cystic Fibrosis: $<span id="cf-amount">1500</span></li>
-            <li>Parkinson's Disease: $<span id="parkinsons-amount">3200</span></li>
-            <li>Multiple Sclerosis: $<span id="ms-amount">2700</span></li>
-            <li>Type 1 Diabetes: $<span id="diabetes-amount">1800</span></li>
-            <li>Chronic Kidney Disease: $<span id="kidney-amount">4000</span></li>
-            <li>Cancer: $<span id="cancer-amount">5500</span></li>
-            <li>Crohn's Disease: $<span id="crohns-amount">1300</span></li>
-            <li>Cerebral Amyloid Angiopathy: $<span id="caa-amount">1100</span></li>
-            <li>HIV/AIDS: $<span id="hiv-amount">4600</span></li>
-            <li>Lupus: $<span id="lupus-amount">2200</span></li>
-            <li>Marburg Virus: $<span id="marburg-amount">900</span></li>
-            <li>Ebola: $<span id="ebola-amount">3500</span></li>
-            <li>Fibrodysplasia Ossificans Progressiva: $<span id="fop-amount">800</span></li>
-            <li>Graves' Disease: $<span id="graves-amount">1700</span></li>
-            <li>Herpes Simplex: $<span id="herpes-amount">2100</span></li>
-            <li>Polio: $<span id="polio-amount">2400</span></li>
-            <li>Pulmonary Hypertension: $<span id="ph-amount">1600</span></li>
-            <li>Rheumatoid Arthritis: $<span id="ra-amount">2900</span></li>
-            <li>Schizophrenia: $<span id="schizo-amount">3100</span></li>
-            <li>Scleroderma: $<span id="sclero-amount">1400</span></li>
-            <li>Spinocerebellar Ataxia: $<span id="sca-amount">1200</span></li>
-            <li>Systemic Lupus Erythematosus: $<span id="sle-amount">2500</span></li>
-        </ul>
-    </div>
-</div>  
-<nav class="bg-white dark:bg-gray-900 shadow-md fixed top-0 left-0 w-full z-50">
-    <div class="max-w-6xl mx-auto px-4">
-        <div class="flex justify-between">
-            <div class="flex space-x-4">
-                <!-- Logo -->
-                <div>
-                    <a href="#" class="flex items-center py-5 px-2 text-gray-700 dark:text-gray-300">
-                        <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fimages4.fanpop.com%2Fimage%2Fphotos%2F23800000%2FDoc-Brown-back-to-the-future-23840617-635-958.jpg&f=1&nofb=1&ipt=365fe7be1ce67539f69cedc7795bf8e2fa6181120133e65553ec12dd605e460d&ipo=images" alt="Logo" class="h-8 w-8 mr-2">
-                        <span class="font-bold">Doc Brown's Prizes</span>
-                    </a>
-                </div>
-                <!-- Primary Navbar items -->
-                <div class="hidden md:flex items-center space-x-1">
-                    <a href="#pay-bounties" class="py-5 px-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Donate/Invest</a>
-                    <a href="#cured-it" class="py-5 px-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Get Paid</a>
-                </div>
+    <div id="contributions-container" class="fixed top-20 right-20 z-50 flex flex-col space-y-2 p-4">
+        <div class="contributions">
+            <h3 class="text-lg font-bold mb-2">Contributions by Disease</h3>
+            <div class="overflow-y-auto max-h-96">
+                <ul id="contributions-list">
+                    <!-- This will be populated dynamically -->
+                </ul>
             </div>
-            <!-- Secondary Navbar items -->
-            <div class="hidden md:flex items-center space-x-1">
-                <a href="#contributions-container" class="py-5 px-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Contributions</a>
-            </div>
-            <!-- Mobile menu button -->
-            <div class="md:hidden flex items-center">
-                <button class="mobile-menu-button">
-                    <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+        </div>
+    </div>  
+    
+    <!-- Modal for submission details -->
+    <div id="submission-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-90vh overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">Submission Details</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="submission-details" class="space-y-4"></div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button id="close-modal-btn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">Close</button>
+                </div>
             </div>
         </div>
     </div>
-    <!-- mobile menu -->
-    <div class="mobile-menu hidden md:hidden">
-        <a href="#pay-bounties" class="block py-2 px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-700">Donate/Invest</a>
-        <a href="#cured-it" class="block py-2 px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-700">Get Paid</a>
-        <a href="#contributions-container" class="block py-2 px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-700">Contributions</a>
+    
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl text-center">
+            <div class="loading mb-4 mx-auto"></div>
+            <p id="loading-message" class="text-gray-800 dark:text-gray-200">Processing your request...</p>
+        </div>
     </div>
-</nav>
+    
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="p-6">
+                <div class="mb-4 text-center">
+                    <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-check text-2xl text-green-500"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 text-center mb-2">Success!</h3>
+                <p id="success-message" class="text-gray-700 dark:text-gray-300 text-center mb-6">Your contribution was successfully processed.</p>
+                <div class="flex justify-center">
+                    <button id="success-close-btn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
-        const fakeContributions = [
-            "Magic Mike contributed $69 for Alzheimer's Disease",
-            "Jane Doe contributed $150 for Multiple Sclerosis",
-            "John Smith contributed $200 for Cancer",
-            "Alice Wonderland contributed $85 for Parkinson's Disease"
-        ];
+        // Global variables for the application
+        let currentPaymentMethod = null;
+        let selectedCrypto = null;
+        let stripe = null;
+        let cardElements = {};
+        let diseaseAmounts = {};
+        
+        // Initialize on document load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeStripe();
+            fetchDiseaseData();
+            setupEventListeners();
+            initializeDarkMode();
+            displayFakeContributions();
+        });
+        
+    // Replace the initializeStripe function with this version
+function initializeStripe() {
+  // Create a mock Stripe object
+  stripe = {
+    elements: function() {
+      return {
+        create: function(type) {
+          return {
+            mount: function() {
+              console.log('Mounted mock ' + type + ' element');
+            },
+            addEventListener: function(event, callback) {
+              console.log('Added event listener to ' + type);
+            }
+          };
+        }
+      };
+    },
+    confirmCardPayment: async function(clientSecret, details) {
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Always return success for testing
+      return {
+        paymentIntent: {
+          status: 'succeeded',
+          id: 'pi_' + Math.random().toString(36).substr(2, 9)
+        }
+      };
+    }
+  };
+  
+  // Create mock card elements
+  cardElements = {
+    number: { mount: function() {}, addEventListener: function() {} },
+    expiry: { mount: function() {}, addEventListener: function() {} },
+    cvc: { mount: function() {}, addEventListener: function() {} }
+  };
+  
+  // Create visual representations of card fields to make it look functional
+  const cardFields = ['card-number-element', 'card-expiry-element', 'card-cvc-element'];
+  cardFields.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.innerHTML = `<div class="mock-input bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded p-2 text-sm text-gray-500">Demo Card Field</div>`;
+    }
+  });
+}
 
+// Replace the processStripePayment function with this mock version
+async function processStripePayment(disease, name, email, amount, contributionType) {
+  try {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Generate a fake payment ID for testing
+    const paymentId = 'pi_mock_' + Math.random().toString(36).substr(2, 9);
+    
+    // Always succeed for testing purposes
+    updateLocalContributionData(disease, amount);
+    saveContributionHistory(disease, name, email, amount, contributionType, 'completed', 'credit-card', paymentId);
+    
+    document.getElementById('contribute-form').reset();
+    hideLoading();
+    showSuccessModal(`Thank you, ${name}, for your ${contributionType.toLowerCase()} of $${amount.toFixed(2)} towards ${disease} research!`);
+    
+    // Show notification
+    const contributionMessage = `${name} ${contributionType.toLowerCase()}d $${amount.toFixed(2)} for ${disease}`;
+    showNotification(contributionMessage);
+    
+  } catch (error) {
+    console.error('Mock payment error:', error);
+    hideLoading();
+    showAlert('There was an error processing your payment. Please try again.', 'error');
+  }
+}
+
+// Replace the processCryptoPayment function with this mock version
+async function processCryptoPayment(disease, name, email, amount, contributionType, crypto) {
+  try {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Generate a fake transaction ID
+    const txId = '0x' + Math.random().toString(36).substr(2, 64);
+    
+    // Always succeed for testing purposes
+    updateLocalContributionData(disease, amount);
+    saveContributionHistory(disease, name, email, amount, contributionType, 'completed', 'crypto-' + crypto, txId);
+    
+    document.getElementById('contribute-form').reset();
+    hideLoading();
+    showSuccessModal(`Thank you, ${name}, for your ${contributionType.toLowerCase()} of $${amount.toFixed(2)} towards ${disease} research using ${crypto.toUpperCase()}!`);
+    
+    // Show notification
+    const contributionMessage = `${name} ${contributionType.toLowerCase()}d $${amount.toFixed(2)} for ${disease} using ${crypto.toUpperCase()}`;
+    showNotification(contributionMessage);
+    
+  } catch (error) {
+    console.error('Mock crypto payment error:', error);
+    hideLoading();
+    showAlert('There was an error processing your crypto payment. Please try again.', 'error');
+  }
+}
+
+// Update saveContributionHistory to include payment method and transaction ID
+function saveContributionHistory(disease, name, email, amount, type, status, paymentMethod = 'unknown', transactionId = null) {
+  const contributions = JSON.parse(localStorage.getItem('contributions') || '[]');
+  
+  contributions.push({
+    disease,
+    name,
+    email,
+    amount,
+    type,
+    status,
+    paymentMethod,
+    transactionId,
+    date: new Date().toISOString()
+  });
+  
+  localStorage.setItem('contributions', JSON.stringify(contributions));
+}
+
+// Add mock crypto addresses for each cryptocurrency
+function selectCryptoOption(crypto) {
+  selectedCrypto = crypto;
+  
+  // Highlight selected option and reset others
+  document.querySelectorAll('.crypto-option').forEach(option => {
+    if (option.dataset.crypto === crypto) {
+      option.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-gray-700');
+    } else {
+      option.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-gray-700');
+    }
+  });
+  
+  // Show crypto payment details with mock address
+  const cryptoDetails = document.getElementById('crypto-payment-details');
+  cryptoDetails.classList.remove('hidden');
+  
+  const amount = document.getElementById('amount').value || 100; // Default to 100 if empty
+  let cryptoAmount = 0;
+  let address = '';
+  
+  // Mock conversion rates and addresses
+  switch(crypto) {
+    case 'bitcoin':
+      cryptoAmount = (amount / 60000).toFixed(8); // Mock BTC price
+      address = 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh';
+      break;
+    case 'ethereum':
+      cryptoAmount = (amount / 3000).toFixed(8); // Mock ETH price
+      address = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
+      break;
+    case 'usdc':
+      cryptoAmount = amount; // 1:1 with USD
+      address = '0x1b84765de8b7566e4cebc4ad49dd8af416712327';
+      break;
+  }
+  
+  document.getElementById('crypto-amount').textContent = cryptoAmount;
+  document.getElementById('crypto-currency').textContent = crypto.toUpperCase();
+  document.getElementById('crypto-address').value = address;
+}
+
+// Add function to generate demo data for the dashboard
+function generateDemoData() {
+  // Clear existing data
+  localStorage.removeItem('contributions');
+  localStorage.removeItem('cureSubmissions');
+  
+  // Generate sample contributions
+  const contributions = [];
+  const diseases = [
+    "Alzheimer's Disease", 
+    "Multiple Sclerosis", 
+    "Cancer", 
+    "Parkinson's Disease",
+    "Type 1 Diabetes",
+    "HIV/AIDS"
+  ];
+  
+  const sampleEmail = "demo@example.com";
+  const names = ["John Doe", "Jane Smith", "Demo User"];
+  const types = ["Donate", "Invest"];
+  const paymentMethods = ["credit-card", "crypto-bitcoin", "crypto-ethereum"];
+  
+  // Generate 10 random contributions
+  for (let i = 0; i < 10; i++) {
+    const disease = diseases[Math.floor(Math.random() * diseases.length)];
+    const name = names[Math.floor(Math.random() * names.length)];
+    const type = types[Math.floor(Math.random() * types.length)];
+    const amount = Math.floor(Math.random() * 1000) + 50; // Random amount between 50 and 1050
+    const paymentMethod = paymentMethods[Math.floor(Math.random() * paymentMethods.length)];
+    const transactionId = '0x' + Math.random().toString(36).substr(2, 20);
+    
+    // Create a random date within the last 30 days
+    const date = new Date();
+    date.setDate(date.getDate() - Math.floor(Math.random() * 30));
+    
+    contributions.push({
+      disease,
+      name,
+      email: sampleEmail,
+      amount,
+      type,
+      status: 'completed',
+      paymentMethod,
+      transactionId,
+      date: date.toISOString()
+    });
+  }
+  
+  localStorage.setItem('contributions', JSON.stringify(contributions));
+  
+  // Generate sample cure submissions
+  const submissions = [];
+  const statuses = ['Under Review', 'Approved', 'Rejected'];
+  
+  for (let i = 0; i < 3; i++) {
+    const disease = diseases[Math.floor(Math.random() * diseases.length)];
+    const name = names[Math.floor(Math.random() * names.length)];
+    const status = statuses[i];
+    
+    // Create a random date within the last 90 days
+    const date = new Date();
+    date.setDate(date.getDate() - Math.floor(Math.random() * 90));
+    
+    submissions.push({
+      disease,
+      name,
+      email: sampleEmail,
+      description: `This is a sample cure submission for ${disease}. It demonstrates how the cure submissions would appear in the dashboard.`,
+      files: ["research.pdf", "clinical_trial_results.xlsx", "patient_data.csv"],
+      paymentAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+      date: date.toISOString(),
+      status: status,
+      feedback: status === 'Rejected' ? "More clinical trial data needed to verify efficacy." : ""
+    });
+  }
+  
+  localStorage.setItem('cureSubmissions', JSON.stringify(submissions));
+  
+  // Update the dashboard with this data
+  document.getElementById('dashboard-email').value = sampleEmail;
+  loadUserDashboard();
+  
+  showAlert('Demo data generated successfully! Use email "demo@example.com" to view data.', 'success');
+}
+
+// Add function to reset all data
+function resetDemoData() {
+  localStorage.removeItem('contributions');
+  localStorage.removeItem('cureSubmissions');
+  
+  // Reset disease amounts to original state
+  useMockDiseaseData();
+  
+  showAlert('All demo data has been reset.', 'success');
+}
+        
+        // Fetch initial disease data from the server
+        async function fetchDiseaseData() {
+            try {
+                showLoading('Loading disease data...');
+                const response = await fetch('https://degeneratecures.omar-c29.workers.dev/diseases');
+                const data = await response.json();
+                
+                if (data.success) {
+                    diseaseAmounts = data.diseases;
+                    updateDiseaseDisplay();
+                    updateContributionsList();
+                } else {
+                    showAlert('Error loading disease data: ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error fetching disease data:', error);
+                
+                // Use mock data if server isn't available
+                useMockDiseaseData();
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // Use mock data for testing when server is unavailable
+        function useMockDiseaseData() {
+            diseaseAmounts = {
+                "Alzheimer's Disease": {amount: 5000, goal: 20000, researchers: 12},
+                "Amyotrophic Lateral Sclerosis (ALS)": {amount: 3000, goal: 15000, researchers: 8},
+                "Huntington's Disease": {amount: 2500, goal: 10000, researchers: 5},
+                "Cystic Fibrosis": {amount: 1500, goal: 8000, researchers: 6},
+                "Parkinson's Disease": {amount: 3200, goal: 12000, researchers: 10},
+                "Multiple Sclerosis": {amount: 2700, goal: 10000, researchers: 7},
+                "Type 1 Diabetes": {amount: 1800, goal: 9000, researchers: 9},
+                "Chronic Kidney Disease": {amount: 4000, goal: 15000, researchers: 8},
+                "Cancer": {amount: 5500, goal: 25000, researchers: 15},
+                "Crohn's Disease": {amount: 1300, goal: 7000, researchers: 4},
+                "Cerebral Amyloid Angiopathy": {amount: 1100, goal: 6000, researchers: 3},
+                "HIV/AIDS": {amount: 4600, goal: 20000, researchers: 11},
+                "Lupus": {amount: 2200, goal: 8000, researchers: 6},
+                "Marburg Virus": {amount: 900, goal: 5000, researchers: 2},
+                "Ebola": {amount: 3500, goal: 15000, researchers: 7},
+                "Fibrodysplasia Ossificans Progressiva": {amount: 800, goal: 5000, researchers: 2},
+                "Graves' Disease": {amount: 1700, goal: 7000, researchers: 5},
+                "Herpes Simplex": {amount: 2100, goal: 8000, researchers: 6},
+                "Polio": {amount: 2400, goal: 10000, researchers: 4},
+                "Pulmonary Hypertension": {amount: 1600, goal: 7000, researchers: 5},
+                "Rheumatoid Arthritis": {amount: 2900, goal: 10000, researchers: 8},
+                "Schizophrenia": {amount: 3100, goal: 12000, researchers: 9},
+                "Scleroderma": {amount: 1400, goal: 6000, researchers: 4},
+                "Spinocerebellar Ataxia": {amount: 1200, goal: 5000, researchers: 3},
+                "Systemic Lupus Erythematosus": {amount: 2500, goal: 9000, researchers: 7}
+            };
+            
+            updateDiseaseDisplay();
+            updateContributionsList();
+        }
+        
+        // Update the disease display in the sidebar
+        function updateContributionsList() {
+            const contributionsList = document.getElementById('contributions-list');
+            contributionsList.innerHTML = '';
+            
+            Object.entries(diseaseAmounts).forEach(([disease, data]) => {
+                const li = document.createElement('li');
+                li.className = 'py-2 border-b border-gray-200 last:border-0';
+                li.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="disease-name text-sm">${disease}</span>
+                        <span class="amount">$${data.amount.toLocaleString()}</span>
+                    </div>
+                    <div class="progress-container mt-1">
+                        <div class="progress-bar" style="width: ${Math.min(100, (data.amount / data.goal) * 100)}%"></div>
+                    </div>
+                    <div class="text-xs text-right text-gray-500">
+                        ${Math.round((data.amount / data.goal) * 100)}% of $${data.goal.toLocaleString()} goal
+                    </div>
+                `;
+                contributionsList.appendChild(li);
+            });
+        }
+        
+        // Initialize dark mode toggle
+        function initializeDarkMode() {
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            darkModeToggle.addEventListener('click', function() {
+                document.documentElement.classList.toggle('dark-mode');
+                const isDark = document.documentElement.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                darkModeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            // Disease selection change event
+            document.getElementById('disease').addEventListener('change', function() {
+                updateSelectedDiseaseStats(this.value);
+            });
+            // Demo data
+            document.getElementById('generate-demo-data').addEventListener('click', generateDemoData);
+document.getElementById('reset-demo-data').addEventListener('click', resetDemoData);
+            
+            // Contribution form submission
+            document.getElementById('contribute-form').addEventListener('submit', handleContribution);
+            
+            // Cure form submission
+            document.getElementById('cure-form').addEventListener('submit', handleCureSubmission);
+            
+            // Payment method selection
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectPaymentMethod(this.dataset.payment);
+                });
+            });
+            
+            // Crypto option selection
+            document.querySelectorAll('.crypto-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectCryptoOption(this.dataset.crypto);
+                });
+            });
+            
+            // Dashboard submission
+            document.getElementById('dashboard-submit').addEventListener('click', loadUserDashboard);
+            
+            // Copy crypto address
+            document.getElementById('copy-address').addEventListener('click', function() {
+                const addressField = document.getElementById('crypto-address');
+                navigator.clipboard.writeText(addressField.value);
+                showAlert('Address copied to clipboard!', 'success');
+            });
+            
+            // Close modals
+            document.getElementById('close-modal').addEventListener('click', closeSubmissionModal);
+            document.getElementById('close-modal-btn').addEventListener('click', closeSubmissionModal);
+            document.getElementById('success-close-btn').addEventListener('click', function() {
+                document.getElementById('success-modal').classList.add('hidden');
+            });
+            
+            // Mobile menu toggle
+            const btn = document.querySelector(".mobile-menu-button");
+            const menu = document.querySelector(".mobile-menu");
+            btn.addEventListener("click", () => {
+                menu.classList.toggle("hidden");
+            });
+            
+            // Initially show disease stats for the default selected disease
+            updateSelectedDiseaseStats(document.getElementById('disease').value);
+        }
+        
+        // Update the selected disease stats
+        function updateSelectedDiseaseStats(disease) {
+            const statsContainer = document.getElementById('selected-disease-stats');
+            const diseaseData = diseaseAmounts[disease];
+            
+            if (diseaseData) {
+                statsContainer.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-lg font-medium">${disease}</span>
+                        <span class="text-lg font-bold">$${diseaseData.amount.toLocaleString()}</span>
+                    </div>
+                    <div class="progress-container mb-2">
+                        <div class="progress-bar" style="width: ${Math.min(100, (diseaseData.amount / diseaseData.goal) * 100)}%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span>${Math.round((diseaseData.amount / diseaseData.goal) * 100)}% of $${diseaseData.goal.toLocaleString()} goal</span>
+                        <span>${diseaseData.researchers} active researchers</span>
+                    </div>
+                `;
+            } else {
+                statsContainer.innerHTML = `<span class="text-lg font-medium">Select a disease to see details</span>`;
+            }
+        }
+        
+        // Update the disease display in the UI
+        function updateDiseaseDisplay() {
+            let totalAmount = 0;
+            
+            Object.entries(diseaseAmounts).forEach(([disease, data]) => {
+                totalAmount += data.amount;
+                
+                // Update the specific disease amount display if it exists
+                const elementId = disease.toLowerCase().replace(/ /g, '-').replace(/[\(\)]/g, '') + '-amount';
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.innerText = data.amount.toLocaleString();
+                }
+            });
+            
+            // Update total amount display
+            const totalAmountElement = document.getElementById('total-amount');
+            if (totalAmountElement) {
+                totalAmountElement.innerText = totalAmount.toLocaleString();
+            }
+        }
+        
+        // Handle contribution form submission
+        async function handleContribution(e) {
+            e.preventDefault();
+            
+            const disease = document.getElementById('disease').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const contributionType = document.getElementById('contribution-type').value;
+            
+            // Validation
+            if (!disease || !name || !email || isNaN(amount) || amount <= 0) {
+                showAlert('Please fill out all fields with valid information.', 'error');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                showAlert('Please enter a valid email address.', 'error');
+                return;
+            }
+            
+            if (!currentPaymentMethod) {
+                showAlert('Please select a payment method.', 'error');
+                return;
+            }
+            
+            // Process payment based on payment method
+            try {
+                showLoading('Processing your contribution...');
+                
+                if (currentPaymentMethod === 'credit-card') {
+                    await processStripePayment(disease, name, email, amount, contributionType);
+                } else if (currentPaymentMethod === 'crypto') {
+                    if (!selectedCrypto) {
+                        showAlert('Please select a cryptocurrency.', 'error');
+                        hideLoading();
+                        return;
+                    }
+                    await processCryptoPayment(disease, name, email, amount, contributionType, selectedCrypto);
+                }
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                showAlert('There was an error processing your payment. Please try again.', 'error');
+                hideLoading();
+            }
+        }
+        
+       
+    
+        // Update local contribution data (for demo without server)
+        function updateLocalContributionData(disease, amount) {
+            if (diseaseAmounts[disease]) {
+                diseaseAmounts[disease].amount += amount;
+                updateDiseaseDisplay();
+                updateContributionsList();
+                updateSelectedDiseaseStats(disease);
+            }
+        }
+        
+        // Handle cure submission form
+        async function handleCureSubmission(e) {
+            e.preventDefault();
+            
+            const diseaseCured = document.getElementById('disease-cured').value;
+            const nameCured = document.getElementById('name-cured').value;
+            const emailCured = document.getElementById('email-cured').value;
+            const descriptionCured = document.getElementById('description-cured').value;
+            const evidenceFiles = document.getElementById('evidence-files').files;
+            const paymentAddress = document.getElementById('payment-address').value;
+            
+            // Form validation
+            if (!diseaseCured || !nameCured || !emailCured || !descriptionCured || !paymentAddress) {
+                showAlert('Please fill out all required fields.', 'error');
+                return;
+            }
+            
+            // Email validation
+            if (!validateEmail(emailCured)) {
+                showAlert('Please enter a valid email address.', 'error');
+                return;
+            }
+            
+            // Process file uploads (in a real app)
+            let fileNames = Array.from(evidenceFiles).map(file => file.name);
+            
+            try {
+                showLoading('Submitting your cure...');
+                
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Save submission
+                saveCureSubmission(diseaseCured, nameCured, emailCured, descriptionCured, fileNames, paymentAddress);
+                
+                hideLoading();
+                showSuccessModal(`Thank you, ${nameCured}, for submitting your cure for ${diseaseCured}! Our scientific review team will evaluate your submission and contact you within 14 days.`);
+                document.getElementById('cure-form').reset();
+            } catch (error) {
+                console.error('Submission error:', error);
+                hideLoading();
+                showAlert('There was an error processing your submission. Please try again.', 'error');
+            }
+        }
+        
+        // Load user dashboard
+        function loadUserDashboard() {
+            const email = document.getElementById('dashboard-email').value;
+            if (!validateEmail(email)) {
+                showAlert('Please enter a valid email address.', 'error');
+                return;
+            }
+            
+            showLoading('Loading your dashboard...');
+            
+            // Simulate API call
+            setTimeout(() => {
+                document.getElementById('dashboard-content').classList.remove('hidden');
+                
+                // Load contributions
+                const contributions = JSON.parse(localStorage.getItem('contributions') || '[]');
+                const userContributions = contributions.filter(c => c.email.toLowerCase() === email.toLowerCase());
+                
+                // Calculate totals
+                let totalContributions = 0;
+                let totalInvestments = 0;
+                let totalDonations = 0;
+                
+                userContributions.forEach(c => {
+                    totalContributions += c.amount;
+                    if (c.type === 'Invest') {
+                        totalInvestments += c.amount;
+                    } else {
+                        totalDonations += c.amount;
+                    }
+                });
+                
+                // Update dashboard statistics
+                document.getElementById('dashboard-total').innerText = '$' + totalContributions.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                document.getElementById('dashboard-investments').innerText = '$' + totalInvestments.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                document.getElementById('dashboard-donations').innerText = '$' + totalDonations.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                
+                const contributionsTbody = document.getElementById('contributions-tbody');
+                contributionsTbody.innerHTML = '';
+                
+                if (userContributions.length === 0) {
+                    document.getElementById('no-contributions').classList.remove('hidden');
+                } else {
+                    document.getElementById('no-contributions').classList.add('hidden');
+                    
+                    userContributions.forEach(c => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="py-2 px-4 border-b">${new Date(c.date).toLocaleDateString()}</td>
+                            <td class="py-2 px-4 border-b">${c.disease}</td>
+                            <td class="py-2 px-4 border-b">${c.type}</td>
+                            <td class="py-2 px-4 border-b">$${c.amount.toFixed(2)}</td>
+                            <td class="py-2 px-4 border-b">$${c.amount.toFixed(2)}</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="px-2 py-1 rounded-full text-xs font-semibold 
+                                    ${c.status === 'completed' ? 'bg-yellow-200 text-yellow-800' : 'bg-yellow-200 text-yellow-800'}">
+                                    ${c.status === 'completed' ? 'Completed' : 'Pending'}
+                                </span>
+                            </td>
+                        `;
+                        contributionsTbody.appendChild(row);
+                    });
+                }
+                
+                // Load submissions
+                const submissions = JSON.parse(localStorage.getItem('cureSubmissions') || '[]');
+                const userSubmissions = submissions.filter(s => s.email.toLowerCase() === email.toLowerCase());
+                
+                const submissionsTbody = document.getElementById('submissions-tbody');
+                submissionsTbody.innerHTML = '';
+                
+                if (userSubmissions.length === 0) {
+                    document.getElementById('no-submissions').classList.remove('hidden');
+                } else {
+                    document.getElementById('no-submissions').classList.add('hidden');
+                    
+                    userSubmissions.forEach(s => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="py-2 px-4 border-b">${new Date(s.date).toLocaleDateString()}</td>
+                            <td class="py-2 px-4 border-b">${s.disease}</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="px-2 py-1 rounded-full text-xs font-semibold
+                                    ${s.status === 'Under Review' ? 'bg-yellow-200 text-yellow-800' : 
+                                    s.status === 'Approved' ? 'bg-yellow-200 text-yellow-800' : 
+                                    'bg-red-200 text-red-800'}">
+                                    ${s.status}
+                                </span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <button class="text-blue-500 hover:text-blue-700" onclick="viewSubmissionDetails('${s.date}')">View Details</button>
+                            </td>
+                        `;
+                        submissionsTbody.appendChild(row);
+                    });
+                }
+                
+                hideLoading();
+            }, 1500);
+        }
+
+        // Add demo email button listener
+document.getElementById('use-demo-email').addEventListener('click', function() {
+  document.getElementById('dashboard-email').value = 'demo@example.com';
+  loadUserDashboard();
+});
+
+// Make API calls always succeed for testing
+function fetchDiseaseData() {
+  showLoading('Loading disease data...');
+  
+  // Always use mock data for testing
+  setTimeout(() => {
+    useMockDiseaseData();
+    hideLoading();
+  }, 1000);
+}
+
+// Function to show a detailed crypto payment screen
+function showCryptoPaymentDetails() {
+  if (!selectedCrypto) return;
+  
+  const amount = document.getElementById('amount').value || 100;
+  const cryptoDetails = document.getElementById('crypto-payment-details');
+  cryptoDetails.classList.remove('hidden');
+  
+  let cryptoAmount, qrCodeUrl;
+  switch(selectedCrypto) {
+    case 'bitcoin':
+      cryptoAmount = (amount / 60000).toFixed(8);
+      qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=bitcoin:bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh?amount=' + cryptoAmount;
+      break;
+    case 'ethereum':
+      cryptoAmount = (amount / 3000).toFixed(8);
+      qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ethereum:0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045?value=' + cryptoAmount;
+      break;
+    case 'usdc':
+      cryptoAmount = amount;
+      qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=0x1b84765de8b7566e4cebc4ad49dd8af416712327';
+      break;
+  }
+
+  // Update the UI with mock details
+  document.getElementById('crypto-amount').textContent = cryptoAmount;
+  document.getElementById('crypto-currency').textContent = selectedCrypto.toUpperCase();
+}
+        
+        // Select payment method
+        function selectPaymentMethod(method) {
+            currentPaymentMethod = method;
+            
+            // Highlight selected option and reset others
+            document.querySelectorAll('.payment-option').forEach(option => {
+                if (option.dataset.payment === method) {
+                    option.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-gray-700');
+                } else {
+                    option.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-gray-700');
+                }
+            });
+            
+            // Show/hide appropriate form
+            document.getElementById('credit-card-form').classList.toggle('hidden', method !== 'credit-card');
+            document.getElementById('crypto-form').classList.toggle('hidden', method !== 'crypto');
+            
+            // Reset crypto selection if switching away from crypto
+            if (method !== 'crypto') {
+                selectedCrypto = null;
+                document.getElementById('crypto-payment-details').classList.add('hidden');
+                document.querySelectorAll('.crypto-option').forEach(option => {
+                    option.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-gray-700');
+                });
+            }
+        }
+        
+        // Select crypto option
+        function selectCryptoOption(crypto) {
+            selectedCrypto = crypto;
+            
+            // Highlight selected option and reset others
+            document.querySelectorAll('.crypto-option').forEach(option => {
+                if (option.dataset.crypto === crypto) {
+                    option.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-gray-700');
+                } else {
+                    option.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-gray-700');
+                }
+            });
+            
+            // Show crypto payment details with mock address
+            const cryptoDetails = document.getElementById('crypto-payment-details');
+            cryptoDetails.classList.remove('hidden');
+            
+            const amount = document.getElementById('amount').value;
+            let cryptoAmount = 0;
+            let address = '';
+            
+            // Mock conversion rates and addresses
+            switch(crypto) {
+                case 'bitcoin':
+                    cryptoAmount = (amount / 60000).toFixed(8); // Mock BTC price
+                    address = 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh';
+                    break;
+                case 'ethereum':
+                    cryptoAmount = (amount / 3000).toFixed(8); // Mock ETH price
+                    address = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
+                    break;
+                case 'usdc':
+                    cryptoAmount = amount; // 1:1 with USD
+                    address = '0x1b84765de8b7566e4cebc4ad49dd8af416712327';
+                    break;
+            }
+            
+            document.getElementById('crypto-amount').textContent = cryptoAmount;
+            document.getElementById('crypto-currency').textContent = crypto.toUpperCase();
+            document.getElementById('crypto-address').value = address;
+        }
+        
+        // View submission details
+        function viewSubmissionDetails(submissionDate) {
+            const submissions = JSON.parse(localStorage.getItem('cureSubmissions') || '[]');
+            const submission = submissions.find(s => s.date === submissionDate);
+            
+            if (!submission) {
+                showAlert('Submission not found.', 'error');
+                return;
+            }
+            
+            const detailsContainer = document.getElementById('submission-details');
+            detailsContainer.innerHTML = `
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Submitted on ${new Date(submission.date).toLocaleString()}</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 dark:text-gray-200">Disease</h4>
+                    <p class="text-gray-700 dark:text-gray-300">${submission.disease}</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 dark:text-gray-200">Description</h4>
+                    <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">${submission.description}</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 dark:text-gray-200">Files Uploaded</h4>
+                    <ul class="list-disc pl-5 text-gray-700 dark:text-gray-300">
+                        ${submission.files.length ? submission.files.map(file => `<li>${file}</li>`).join('') : '<li class="italic text-gray-500">No files uploaded</li>'}
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 dark:text-gray-200">Status</h4>
+                    <p class="inline-block px-2 py-1 rounded-full text-xs font-semibold
+                        ${submission.status === 'Under Review' ? 'bg-yellow-200 text-yellow-800' : 
+                        submission.status === 'Approved' ? 'bg-yellow-200 text-yellow-800' : 
+                        'bg-red-200 text-red-800'}">
+                        ${submission.status}
+                    </p>
+                </div>
+                ${submission.feedback ? `
+                <div>
+                    <h4 class="font-bold text-gray-800 dark:text-gray-200">Feedback</h4>
+                    <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">${submission.feedback}</p>
+                </div>
+                ` : ''}
+                <div>
+                    <h4 class="font-bold text-gray-800 dark:text-gray-200">Payment Address</h4>
+                    <p class="text-gray-700 dark:text-gray-300">${submission.paymentAddress}</p>
+                </div>
+            `;
+            
+            document.getElementById('submission-modal').classList.remove('hidden');
+        }
+        
+        // Close submission modal
+        function closeSubmissionModal() {
+            document.getElementById('submission-modal').classList.add('hidden');
+        }
+        
+      
+        
+        // Save cure submissions to localStorage
+        function saveCureSubmission(disease, name, email, description, files, paymentAddress) {
+            const submissions = JSON.parse(localStorage.getItem('cureSubmissions') || '[]');
+            
+            submissions.push({
+                disease,
+                name,
+                email,
+                description,
+                files,
+                paymentAddress,
+                date: new Date().toISOString(),
+                status: 'Under Review'
+            });
+            
+            localStorage.setItem('cureSubmissions', JSON.stringify(submissions));
+        }
+        
+        // Validation functions
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        // UI helper functions
+        function showSection(sectionId) {
+            document.getElementById('pay-bounties').classList.add('hidden');
+            document.getElementById('cured-it').classList.add('hidden');
+            document.getElementById('user-dashboard').classList.add('hidden');
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            // Close mobile menu if open
+            document.querySelector('.mobile-menu').classList.add('hidden');
+        }
+        
         function showNotification(message) {
             const notificationsContainer = document.getElementById('notifications-container');
             const notification = document.createElement('div');
@@ -333,125 +1460,88 @@
             notification.innerText = message;
             notificationsContainer.appendChild(notification);
             notification.style.display = 'block';
+            
             setTimeout(() => {
                 notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-100px)';
                 setTimeout(() => {
                     notificationsContainer.removeChild(notification);
-                }, 1000);
-            }, 10000);
+                }, 500);
+            }, 5000);
         }
-
-        function submitContribution() {
-            const disease = document.getElementById('disease').value;
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const amount = parseFloat(document.getElementById('amount').value);
-
-            if (isNaN(amount) || amount <= 0) {
-                alert('Please enter a valid contribution amount.');
-                return;
+        
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.createElement('div');
+            alertContainer.className = `fixed top-0 left-0 w-full flex justify-center items-start z-50 p-4`;
+            
+            let bgColor;
+            switch(type) {
+                case 'success':
+                    bgColor = 'bg-yellow-500';
+                    break;
+                case 'error':
+                    bgColor = 'bg-red-500';
+                    break;
+                case 'warning':
+                    bgColor = 'bg-yellow-500';
+                    break;
+                default:
+                    bgColor = 'bg-blue-500';
             }
-
-            let totalAmount = parseFloat(document.getElementById('total-amount').innerText);
-            totalAmount += amount;
-            document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
-            document.getElementById('selected-disease').innerText = disease;
-
-            const contributionMessage = `${name} contributed $${amount.toFixed(2)} for ${disease}`;
-            showNotification(contributionMessage);
-
-            alert(`Thank you, ${name}, for your contribution of $${amount.toFixed(2)} towards ${disease} research!`);
-            document.getElementById('contribute-form').reset();
-        }
-
-        function submitCure() {
-            const diseaseCured = document.getElementById('disease-cured').value;
-            const nameCured = document.getElementById('name-cured').value;
-            const emailCured = document.getElementById('email-cured').value;
-            const descriptionCured = document.getElementById('description-cured').value;
-
-            if (diseaseCured === '' || nameCured === '' || emailCured === '' || descriptionCured === '') {
-                alert('Please fill out all fields.');
-                return;
-            }
-
-            alert(`Thank you, ${nameCured}, for submitting your cure for ${diseaseCured}! We will review your submission and get back to you shortly.`);
-            document.getElementById('cure-form').reset();
-        }
-
-        // Display fake contributions
-        fakeContributions.forEach((contribution, index) => {
+            
+            alertContainer.innerHTML = `
+                <div class="${bgColor} text-white p-4 rounded-md shadow-lg max-w-md">
+                    <div class="flex justify-between items-center">
+                        <p class="font-semibold">${message}</p>
+                        <button class="ml-4 text-white font-bold" onclick="this.parentElement.parentElement.remove()">×</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(alertContainer);
+            
             setTimeout(() => {
-                showNotification(contribution);
-            }, index * 7000);
-        });
-
-        const diseaseAmounts = {
-        "Alzheimer's Disease": 5000,
-        "Amyotrophic Lateral Sclerosis (ALS)": 3000,
-        "Huntington's Disease": 2500,
-        "Cystic Fibrosis": 1500,
-        "Parkinson's Disease": 3200,
-        "Multiple Sclerosis": 2700,
-        "Type 1 Diabetes": 1800,
-        "Chronic Kidney Disease": 4000,
-        "Cancer": 5500,
-        "Crohn's Disease": 1300,
-        "Cerebral Amyloid Angiopathy": 1100,
-        "HIV/AIDS": 4600,
-        "Lupus": 2200,
-        "Marburg Virus": 900,
-        "Ebola": 3500,
-        "Fibrodysplasia Ossificans Progressiva": 800,
-        "Graves' Disease": 1700,
-        "Herpes Simplex": 2100,
-        "Polio": 2400,
-        "Pulmonary Hypertension": 1600,
-        "Rheumatoid Arthritis": 2900,
-        "Schizophrenia": 3100,
-        "Scleroderma": 1400,
-        "Spinocerebellar Ataxia": 1200,
-        "Systemic Lupus Erythematosus": 2500
-    };
-
-    function submitContribution() {
-        const disease = document.getElementById('disease').value;
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const amount = parseFloat(document.getElementById('amount').value);
-
-        if (isNaN(amount) || amount <= 0) {
-            alert('Please enter a valid contribution amount.');
-            return;
+                alertContainer.style.opacity = '0';
+                alertContainer.style.transition = 'opacity 0.5s ease-in-out';
+                setTimeout(() => {
+                    alertContainer.remove();
+                }, 500);
+            }, 5000);
         }
-
-        let totalAmount = parseFloat(document.getElementById('total-amount').innerText);
-        totalAmount += amount;
-        document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
-        document.getElementById('selected-disease').innerText = disease;
-
-        diseaseAmounts[disease] += amount;
-        document.getElementById(disease.toLowerCase().replace(/ /g, '-').replace(/[\(\)]/g, '') + '-amount').innerText = diseaseAmounts[disease];
-
-        const contributionMessage = `${name} contributed $${amount.toFixed(2)} for ${disease}`;
-        showNotification(contributionMessage);
-
-        alert(`Thank you, ${name}, for your contribution of $${amount.toFixed(2)} towards ${disease} research!`);
-        document.getElementById('contribute-form').reset();
-    }
-
-    function showSection(sectionId) {
-        document.getElementById('pay-bounties').classList.add('hidden');
-        document.getElementById('cured-it').classList.add('hidden');
-        document.getElementById(sectionId).classList.remove('hidden');
-    }
-
-    const btn = document.querySelector("button.mobile-menu-button");
-    const menu = document.querySelector(".mobile-menu");
-
-    btn.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-    });
+        
+        function showLoading(message = 'Loading...') {
+            document.getElementById('loading-message').textContent = message;
+            document.getElementById('loading-overlay').classList.remove('hidden');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+        
+        function showSuccessModal(message) {
+            document.getElementById('success-message').textContent = message;
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+        
+        // Display fake contribution notifications for demo
+        function displayFakeContributions() {
+            const fakeContributions = [
+                "Emmett Brown contributed $1955 for Alzheimer's Disease",
+                "Jane Doe invested $3500 for Multiple Sclerosis",
+                "John Smith donated $1200 for Cancer Research",
+                "Alice Johnson contributed $750 for Parkinson's Disease"
+            ];
+            
+            fakeContributions.forEach((contribution, index) => {
+                setTimeout(() => {
+                    showNotification(contribution);
+                }, index * 7000);
+            });
+        }
+        
+        // Make functions globally accessible
+        window.showSection = showSection;
+        window.viewSubmissionDetails = viewSubmissionDetails;
     </script>
 </body>
 </html>
