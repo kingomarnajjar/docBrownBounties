@@ -7,6 +7,29 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+
+        /* Mobile-specific button adjustments */
+@media (max-width: 768px) {
+    .flex.justify-center.space-x-4.mb-4 {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 0 10px;
+    }
+    
+    .flex.justify-center.space-x-4.mb-4 > button {
+        width: 100%;
+        max-width: 300px;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    
+    .flex.justify-center.space-x-4.mb-4 > button span {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-size: 14px;
+    }
+}
         .section {
             margin-bottom: 2em;
             padding: 2em;
@@ -259,15 +282,15 @@
             <div class="flex justify-center space-x-4 mb-4">
                 <button onclick="showSection('pay-bounties')" class="relative pulse-button">
                     <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
-                    <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Donate/Invest</span>
+                    <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-2 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Donate/Invest</span>
                 </button>
                 <button onclick="showSection('cured-it')" class="relative">
                     <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
-                    <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Get Paid I Cured It</span>
+                    <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-2 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">Get Paid I Cured It</span>
                 </button>
                 <button onclick="showSection('user-dashboard')" class="relative">
                     <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
-                    <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-3 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">My Dashboard</span>
+                    <span class="font-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-6 py-2 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">My Dashboard</span>
                 </button>
             </div>
 
