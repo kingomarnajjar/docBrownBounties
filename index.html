@@ -32,12 +32,70 @@
             transition: transform 0.5s ease, opacity 0.5s ease;
         }
 
+/* Mobile Bottom Sheet for Contributions */
+@media (max-width: 768px) {
+  #contributions-container {
+    position: fixed;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 70vh;
+    transform: translateY(calc(100% - 50px));
+    transition: transform 0.3s ease-in-out;
+    border-radius: 15px 15px 0 0;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+  
+  #contributions-container.expanded {
+    transform: translateY(0);
+  }
+  
+  .contribution-handle {
+    width: 40px;
+    height: 5px;
+    background-color: #cbd5e1;
+    border-radius: 3px;
+    margin: 10px auto;
+    cursor: pointer;
+  }
+  
+  #contributions-container:hover {
+    transform: translateY(calc(100% - 50px));
+  }
+  
+  #contributions-container.expanded:hover {
+    transform: translateY(0);
+  }
+  
+  .contribution-title {
+    text-align: center;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+  }
+  
+  #contributions-list {
+    max-height: calc(70vh - 80px);
+    overflow-y: auto;
+  }
+}
+
+/* Keep original styling for larger screens */
+@media (min-width: 769px) {
+  .contribution-handle {
+    display: none;
+  }
+}
+
+
         #contributions-container {
             position: fixed;
             top: 80px;
             right: 20px;
             z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 1);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.3);
@@ -1542,6 +1600,85 @@ function showCryptoPaymentDetails() {
         // Make functions globally accessible
         window.showSection = showSection;
         window.viewSubmissionDetails = viewSubmissionDetails;
+
+// Add this to your JavaScript initialization
+function setupContributionsBottomSheet() {
+  const contributionsContainer = document.getElementById('contributions-container');
+  
+  // Add handle and title for mobile
+  if (!document.querySelector('.contribution-handle')) {
+    const handle = document.createElement('div');
+    handle.className = 'contribution-handle';
+    
+    const title = document.createElement('h3');
+    title.className = 'contribution-title';
+    title.textContent = 'Funding Progress';
+    
+    // Insert at beginning of container
+    contributionsContainer.insertBefore(title, contributionsContainer.firstChild);
+    contributionsContainer.insertBefore(handle, contributionsContainer.firstChild);
+  }
+  
+  // Handle click and drag interactions
+  let startY;
+  let currentY;
+  let initialTransform;
+  
+  // Toggle expanded state on handle click
+  document.querySelector('.contribution-handle').addEventListener('click', () => {
+    contributionsContainer.classList.toggle('expanded');
+  });
+  
+  // For touch devices
+  contributionsContainer.addEventListener('touchstart', (e) => {
+    startY = e.touches[0].clientY;
+    const transformValue = window.getComputedStyle(contributionsContainer).transform;
+    initialTransform = transformValue === 'none' ? 0 : parseInt(transformValue.split(',')[5]);
+    
+    contributionsContainer.style.transition = 'none';
+  }, { passive: true });
+  
+  contributionsContainer.addEventListener('touchmove', (e) => {
+    if (!startY) return;
+    currentY = e.touches[0].clientY;
+    const diffY = currentY - startY;
+    
+    // Limit movement to only expand/collapse
+    if (diffY < 0) {
+      // Moving up - expand
+      contributionsContainer.style.transform = `translateY(${Math.max(0, initialTransform + diffY)}px)`;
+    } else {
+      // Moving down - collapse
+      const maxCollapse = window.innerHeight * 0.7 - 50; // Matches CSS
+      contributionsContainer.style.transform = `translateY(${Math.min(maxCollapse, initialTransform + diffY)}px)`;
+    }
+  }, { passive: true });
+  
+  contributionsContainer.addEventListener('touchend', () => {
+    contributionsContainer.style.transition = 'transform 0.3s ease-in-out';
+    
+    // Determine whether to fully expand or collapse
+    if (currentY && startY) {
+      if (currentY < startY) {
+        // Swiped up
+        contributionsContainer.classList.add('expanded');
+      } else {
+        // Swiped down
+        contributionsContainer.classList.remove('expanded');
+      }
+    }
+    
+    startY = null;
+    currentY = null;
+  }, { passive: true });
+}
+
+// Call this in your document ready function
+document.addEventListener('DOMContentLoaded', function() {
+  // ... your existing code
+  setupContributionsBottomSheet();
+});
+
     </script>
 </body>
 </html>
