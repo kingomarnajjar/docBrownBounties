@@ -348,26 +348,104 @@
             transform: translateY(0);
         }
 
-        /* Notification */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: cyan;
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            z-index: 100;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: var(--transition);
-        }
+      
+       /* Notification Container */
+#notifications-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 100%;
+  pointer-events: none; /* Allow clicking through notifications */
+}
 
-        .notification.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+/* Individual Notification */
+.notification {
+  background-color: hotpink;
+  color: whitesmoke;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  pointer-events: auto; /* Make this specific element clickable */
+ 
+  
+  /* Enhanced animation properties */
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28); /* Bouncy effect */
+}
+
+/* Active notification */
+.notification.active {
+  animation-name: notification-bounce-in;
+}
+
+/* Keyframe animations */
+@keyframes notification-bounce-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-7px) scale(1.02);
+  }
+  80% {
+    transform: translateY(2px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animation for notification exit */
+.notification.leaving {
+  animation-name: notification-bounce-out;
+  animation-duration: 0.4s;
+}
+
+@keyframes notification-bounce-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    opacity: 0.9;
+    transform: translateY(-5px) scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+}
+
+/* Optional: add a subtle pulse effect while notification is showing */
+.notification.active:not(.leaving) {
+  animation: notification-bounce-in 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards,
+             notification-pulse 2s 0.5s infinite;
+}
+
+@keyframes notification-pulse {
+  0% {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transform: scale(1.01);
+  }
+  100% {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1);
+  }
+}
 
         /* Progress Bars */
         .progress {
@@ -2952,16 +3030,71 @@ showAlert('All demo data has been reset.', 'success');
 // Display fake contribution notifications for demo
 function displayFakeContributions() {
 const fakeContributions = [
-"Maria Chen donated $2,500 for Alzheimer's Disease",
-"James Wilson invested $5,000 for Multiple Sclerosis",
-"Sarah Johnson contributed $1,200 for Cancer Research",
-"David Lee donated $3,750 for Parkinson's Disease"
+"Dr. Quackers McFeathers donated $1,850 for Parkinson's Disease",
+"Sir Fluffington III invested $4,200 for Lupus Research",
+"Wanda Wondersocks contributed $3,333 for Heart Disease",
+"Professor Pickle Pants donated $2,199 for Diabetes Research",
+"Barnaby Bubblebutt invested $7,500 for Multiple Sclerosis",
+"Tina Tiny-Teacup contributed $900 for Stroke Prevention",
+"Captain Noodle Arms donated $5,250 for Muscular Dystrophy",
+"Lady Gigglebottom invested $8,100 for Alzheimer's Research",
+"Benedict Cumberbunny contributed $3,775 for Cancer Treatment",
+"Fuzzy Wuzzy McBearface donated $1,050 for Epilepsy Research",
+"Percival Pumpernickle invested $6,250 for Leukemia Research",
+"Harriet Hooplah contributed $2,800 for Kidney Disease",
+"Reginald Roflcopter donated $4,100 for Cystic Fibrosis",
+"Princess Snorkelface invested $3,590 for Fibromyalgia",
+"Banana Hammockson contributed $1,975 for Arthritis Research",
+"Sir Loopington Loops donated $2,600 for PTSD Treatment",
+"Madame Wigglebottom invested $9,200 for Dementia Research",
+"Waffle McSyrupface contributed $3,425 for Lung Cancer",
+"Boaty McBoatface donated $7,777 for Colorectal Cancer",
+"Sprinkles Rainbowton invested $1,337 for Mental Health",
+"Wobbles McDoodle contributed $4,850 for Autism Research",
+"Dr. Fancy Pants donated $2,222 for Hearing Loss",
+"Queen Snickerdoodle invested $5,150 for Vision Research",
+"Bartholomew Bumblebee contributed $3,900 for HIV/AIDS",
+"Lord Fluffington-Beans donated $8,400 for Crohn's Disease",
+"Noodle McSpaghetti invested $1,600 for Heart Disease",
+"Tootsie Rollerson contributed $4,300 for Glaucoma Research",
+"Admiral Snugglewumps donated $2,775 for Bipolar Disorder",
+"Colonel Cuddlekins invested $5,500 for ALS Research",
+"Bonkers O'Malley contributed $3,150 for Depression Treatment",
+"Ziggy Stardust Unicornson donated $6,666 for Rare Disease Research",
+"Professor Wibbly-Wobbly invested $2,340 for Malaria Prevention",
+"Bubbles McGiggles contributed $4,700 for Skin Cancer",
+"Snuggles McHuggy donated $1,990 for Tuberculosis Research",
+"Lady Dingleberry invested $7,235 for Huntington's Disease",
+"Poofy VonSnickerdoodle contributed $3,675 for Chronic Pain",
+"Sir Waddles Penguinton donated $2,888 for Narcolepsy Research",
+"Count Chocolatey invested $5,900 for Vitiligo Treatment",
+"Flapjack Buttersworth contributed $4,200 for Anxiety Disorders",
+"Professor Jigglypuff donated $3,333 for Celiac Disease",
+"Doodle McDoodleface invested $6,175 for Retinitis Pigmentosa",
+"Wigglesworth Wobblebutt contributed $1,825 for Scoliosis Research",
+"Fizzy Popperkins donated $4,444 for Asthma Treatment",
+"Baron Von Giggles invested $3,050 for Ehlers-Danlos Syndrome",
+"Cucumber Crumplesnatch contributed $7,825 for Kidney Stones",
+"Biscuit Buttersnaps donated $2,475 for Migraine Research",
+"Princess Muffinface invested $5,350 for Parkinson's Disease",
+"Captain Underpants contributed $9,999 for ADHD Research",
+"Fluffernutter McSnugglebutt donated $3,225 for Psoriasis",
+"Lord Cheesecake invested $4,800 for Cataracts Research",
+"Wobbly Jellybelly contributed $1,750 for Osteoporosis",
+"Snuggle McMuffin donated $6,300 for Lyme Disease",
+"Tickles McGigglepants invested $4,050 for Heart Valve Research",
+"Waffles Pancakington contributed $2,575 for Lymphoma",
+"Dingleberry Fizzleton donated $5,400 for Menopause Research",
+"Princess Sprinklebottom invested $3,800 for Sickle Cell Anemia",
+"Sir Fluffy McFlufferson contributed $8,275 for Tinnitus Research",
+"Major Muffintop donated $2,900 for Vertigo Treatment",
+"Dingleberry Wobbleson invested $4,600 for Epilepsy Research"
 ];
 
 fakeContributions.forEach((contribution, index) => {
 setTimeout(() => {
     showNotification(contribution);
-}, (index + 1) * 8000); // Stagger notifications
+}, (index + 1) * 4000); // Stagger notifications
 });
 }
 
@@ -3009,25 +3142,41 @@ sidebar.addEventListener('touchend', () => {
 
 // Show notifications
 function showNotification(message) {
-const container = document.getElementById('notifications-container');
-const notification = document.createElement('div');
-notification.className = 'notification';
-notification.textContent = message;
+    const container = document.getElementById('notifications-container');
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    
+    // Add some nice formatting to the notification
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <div class="flex-shrink-0 mr-3">
+                <i class="fas fa-heart text-white animate"></i>
+            </div>
+            <div>
+                ${message}
+            </div>
+        </div>
+    `;
+    
+    container.appendChild(notification);
 
-container.appendChild(notification);
-
-// Trigger animation
-setTimeout(() => {
-notification.classList.add('active');
-
-// Auto-remove after 5 seconds
-setTimeout(() => {
-    notification.classList.remove('active');
+    // Trigger entrance animation after a small delay for better effect
     setTimeout(() => {
-        container.removeChild(notification);
-    }, 300);
-}, 5000);
-}, 10);
+        notification.classList.add('active');
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            notification.classList.add('leaving');
+            notification.classList.remove('active');
+            
+            // Remove from DOM after animation completes
+            setTimeout(() => {
+                if (container.contains(notification)) {
+                    container.removeChild(notification);
+                }
+            }, 400); // Match animation-duration for exit
+        }, 3000);
+    }, 10);
 }
 
 // Show alert messages
