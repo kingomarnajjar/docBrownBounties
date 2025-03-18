@@ -32,7 +32,7 @@
 --gray-700: rgba(40, 40, 40, 0.9);
 --gray-800: rgba(20, 20, 20, 0.93);
 --gray-900: rgba(0, 0, 0, 0.95);
-            --border-radius: 0.5rem;
+            --border-radius: 2.0rem;
             --box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             --transition: all 0.3s ease;
         }
@@ -128,6 +128,21 @@
     background-color: var(--gray-700);
     color: var(--gray-200);
 }
+
+.dark-mode #disease-list li:hover,
+.dark-mode #disease-list li.active {
+  background-color: var(--gray-700, #374151) !important;
+}
+
+.dark-mode #disease-list li {
+  color: var(--gray-300, #d1d5db);
+}
+
+/* Fix for selected item in dark mode */
+.dark-mode #disease-list li.bg-gray-100 {
+  background-color: var(--gray-700, #374151) !important;
+}
+
 
         /* Card/Section Styles */
 .card {
@@ -569,6 +584,111 @@
             background-color: var(--primary);
         }
 
+        /* Slick Scrollbars - Add this to your CSS/style section */
+
+/* For Webkit browsers (Chrome, Safari, newer Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light, #818cf8);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary, #4f46e5);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-light, #818cf8) rgba(0, 0, 0, 0.05);
+}
+
+/* Dark mode adjustments */
+.dark-mode ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: var(--primary-dark, #3730a3);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: var(--primary, #4f46e5);
+}
+
+.dark-mode * {
+  scrollbar-color: var(--primary-dark, #3730a3) rgba(255, 255, 255, 0.05);
+}
+
+/* Custom scrollbars for specific elements */
+.custom-dropdown-container #disease-dropdown,
+.contributions-sidebar,
+.modal-content,
+.card-body {
+  /* Ensure these elements have the custom scrollbars even in older browsers */
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-light, #818cf8) rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .custom-dropdown-container #disease-dropdown,
+.dark-mode .contributions-sidebar,
+.dark-mode .modal-content,
+.dark-mode .card-body {
+  scrollbar-color: var(--primary-dark, #3730a3) rgba(255, 255, 255, 0.05);
+}
+
+/* For elements that have max-height and overflow-y: auto/scroll */
+.max-h-64,
+.max-h-80,
+.overflow-y-auto,
+.overflow-y-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-light, #818cf8) rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .max-h-64,
+.dark-mode .max-h-80,
+.dark-mode .overflow-y-auto,
+.dark-mode .overflow-y-scroll {
+  scrollbar-color: var(--primary-dark, #3730a3) rgba(255, 255, 255, 0.05);
+}
+
+/* For tables with horizontal scrolling */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px; /* Slightly smaller for horizontal scrollbars */
+}
+
+/* Optional: Hide scrollbars but keep functionality when not needed */
+@media (hover: hover) {
+  .auto-hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  
+  .auto-hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Webkit */
+  }
+  
+  .auto-hide-scrollbar:hover {
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+  }
+  
+  .auto-hide-scrollbar:hover::-webkit-scrollbar {
+    display: block;
+  }
+}
+
     </style>
 </head>
 <body>
@@ -787,21 +907,21 @@
                             </div>
                             <div class="card-body">
                               <!-- Keep the original select element for form compatibility but hide it -->
-                              <select id="disease" name="disease" required class="form-control hidden">
-                                <option value="Alzheimer's Disease">Alzheimer's Disease</option>
-                                <option value="Amyotrophic Lateral Sclerosis (ALS)">Amyotrophic Lateral Sclerosis (ALS)</option>
-                                <option value="Colour Vision Deficiency">Colour Vision Deficiency</option>
-                                <option value="Huntington's Disease">Huntington's Disease</option>
-                                <option value="Cystic Fibrosis">Cystic Fibrosis</option>
-                                <option value="Parkinson's Disease">Parkinson's Disease</option>
-                                <option value="Multiple Sclerosis">Multiple Sclerosis</option>
-                                <option value="Type 1 Diabetes">Type 1 Diabetes</option>
-                                <option value="Chronic Kidney Disease">Chronic Kidney Disease</option>
-                                <option value="Cancer">Cancer</option>
-                                <option value="HIV/AIDS">HIV/AIDS</option>
-                                <option value="Lupus">Lupus</option>
-                                <option value="Rheumatoid Arthritis">Rheumatoid Arthritis</option>
-                                <option value="Malaria">Malaria</option>
+                              <select id="disease" name="disease" required class="hidden">
+                                <!-- Disease Options for Dropdown -->
+<option value="Alzheimer's Disease">Alzheimer's Disease</option>
+<option value="Amyotrophic Lateral Sclerosis (ALS)">Amyotrophic Lateral Sclerosis (ALS)</option>
+<option value="Huntington's Disease">Huntington's Disease</option>
+<option value="Colour Vision Deficiency">Colour Vision Deficiency</option>
+<option value="Cystic Fibrosis">Cystic Fibrosis</option>
+<option value="Parkinson's Disease">Parkinson's Disease</option>
+<option value="Multiple Sclerosis">Multiple Sclerosis</option>
+<option value="Type 1 Diabetes">Type 1 Diabetes</option>
+<option value="Cancer">Cancer</option>
+<option value="HIV/AIDS">HIV/AIDS</option>
+<option value="Rheumatoid Arthritis">Rheumatoid Arthritis</option>
+<option value="Schizophrenia">Schizophrenia</option>
+<option value="Malaria">Malaria</option>
 <option value="Tuberculosis">Tuberculosis</option>
 <option value="Dengue Fever">Dengue Fever</option>
 <option value="Sickle Cell Disease">Sickle Cell Disease</option>
@@ -814,52 +934,175 @@
 <option value="Pancreatic Cancer">Pancreatic Cancer</option>
 <option value="Ovarian Cancer">Ovarian Cancer</option>
 <option value="Brain Cancer">Brain Cancer</option>
+<option value="Lung Cancer">Lung Cancer</option>
+<option value="Colorectal Cancer">Colorectal Cancer</option>
+<option value="Breast Cancer">Breast Cancer</option>
+<option value="Prostate Cancer">Prostate Cancer</option>
+<option value="Skin Cancer/Melanoma">Skin Cancer/Melanoma</option>
+<option value="Bladder Cancer">Bladder Cancer</option>
+<option value="Kidney Cancer">Kidney Cancer</option>
+<option value="Liver Cancer">Liver Cancer</option>
+<option value="Throat Cancer">Throat Cancer</option>
+<option value="Bone Cancer">Bone Cancer</option>
 <option value="COPD">COPD</option>
 <option value="Asthma">Asthma</option>
+<option value="Pulmonary Fibrosis">Pulmonary Fibrosis</option>
+<option value="Emphysema">Emphysema</option>
+<option value="Cystic Bronchiectasis">Cystic Bronchiectasis</option>
+<option value="Sleep Apnea">Sleep Apnea</option>
 <option value="Dementia">Dementia</option>
 <option value="Epilepsy">Epilepsy</option>
 <option value="Narcolepsy">Narcolepsy</option>
+<option value="Migraine">Migraine</option>
+<option value="Essential Tremor">Essential Tremor</option>
+<option value="Dystonia">Dystonia</option>
+<option value="Ataxia">Ataxia</option>
+<option value="Multiple System Atrophy">Multiple System Atrophy</option>
+<option value="Progressive Supranuclear Palsy">Progressive Supranuclear Palsy</option>
 <option value="Bipolar Disorder">Bipolar Disorder</option>
 <option value="Depression">Depression</option>
 <option value="Anxiety Disorders">Anxiety Disorders</option>
 <option value="PTSD">PTSD</option>
+<option value="OCD">OCD</option>
+<option value="Borderline Personality Disorder">Borderline Personality Disorder</option>
+<option value="Autism Spectrum Disorders">Autism Spectrum Disorders</option>
+<option value="ADHD">ADHD</option>
+<option value="Eating Disorders">Eating Disorders</option>
 <option value="Osteoporosis">Osteoporosis</option>
 <option value="Osteoarthritis">Osteoarthritis</option>
 <option value="Fibromyalgia">Fibromyalgia</option>
+<option value="Ankylosing Spondylitis">Ankylosing Spondylitis</option>
+<option value="Gout">Gout</option>
+<option value="Ehlers-Danlos Syndrome">Ehlers-Danlos Syndrome</option>
+<option value="Osteogenesis Imperfecta">Osteogenesis Imperfecta</option>
 <option value="Glaucoma">Glaucoma</option>
 <option value="Macular Degeneration">Macular Degeneration</option>
 <option value="Cataracts">Cataracts</option>
 <option value="Retinitis Pigmentosa">Retinitis Pigmentosa</option>
+<option value="Diabetic Retinopathy">Diabetic Retinopathy</option>
+<option value="Keratoconus">Keratoconus</option>
+<option value="Usher Syndrome">Usher Syndrome</option>
+<option value="Stargardt Disease">Stargardt Disease</option>
 <option value="Hearing Loss">Hearing Loss</option>
 <option value="Tinnitus">Tinnitus</option>
+<option value="Ménière's Disease">Ménière's Disease</option>
+<option value="Auditory Processing Disorder">Auditory Processing Disorder</option>
+<option value="Auditory Neuropathy">Auditory Neuropathy</option>
 <option value="Kidney Disease">Kidney Disease</option>
 <option value="Liver Cirrhosis">Liver Cirrhosis</option>
 <option value="Hepatitis">Hepatitis</option>
+<option value="Polycystic Kidney Disease">Polycystic Kidney Disease</option>
+<option value="Primary Biliary Cholangitis">Primary Biliary Cholangitis</option>
+<option value="Primary Sclerosing Cholangitis">Primary Sclerosing Cholangitis</option>
+<option value="Nephrotic Syndrome">Nephrotic Syndrome</option>
 <option value="Endometriosis">Endometriosis</option>
 <option value="PCOS">PCOS</option>
+<option value="Uterine Fibroids">Uterine Fibroids</option>
+<option value="Adenomyosis">Adenomyosis</option>
+<option value="Vulvodynia">Vulvodynia</option>
+<option value="Dysmenorrhea">Dysmenorrhea</option>
+<option value="Vaginismus">Vaginismus</option>
 <option value="Inflammatory Bowel Disease">Inflammatory Bowel Disease</option>
 <option value="Celiac Disease">Celiac Disease</option>
+<option value="Irritable Bowel Syndrome">Irritable Bowel Syndrome</option>
+<option value="Gastroparesis">Gastroparesis</option>
+<option value="Chronic Constipation">Chronic Constipation</option>
+<option value="Chronic Pancreatitis">Chronic Pancreatitis</option>
+<option value="Diverticulitis">Diverticulitis</option>
+<option value="Gastroesophageal Reflux Disease">Gastroesophageal Reflux Disease</option>
 <option value="Psoriasis">Psoriasis</option>
 <option value="Eczema">Eczema</option>
 <option value="Vitiligo">Vitiligo</option>
 <option value="Scleroderma">Scleroderma</option>
+<option value="Hidradenitis Suppurativa">Hidradenitis Suppurativa</option>
+<option value="Pemphigus">Pemphigus</option>
+<option value="Epidermolysis Bullosa">Epidermolysis Bullosa</option>
+<option value="Rosacea">Rosacea</option>
 <option value="Spinal Cord Injury">Spinal Cord Injury</option>
 <option value="Traumatic Brain Injury">Traumatic Brain Injury</option>
 <option value="Cerebral Palsy">Cerebral Palsy</option>
+<option value="Chronic Pain Syndromes">Chronic Pain Syndromes</option>
+<option value="Complex Regional Pain Syndrome">Complex Regional Pain Syndrome</option>
+<option value="Phantom Limb Pain">Phantom Limb Pain</option>
+<option value="Paralysis">Paralysis</option>
 <option value="Guillain-Barré Syndrome">Guillain-Barré Syndrome</option>
 <option value="Myasthenia Gravis">Myasthenia Gravis</option>
 <option value="Systemic Lupus Erythematosus">Systemic Lupus Erythematosus</option>
 <option value="Sjögren's Syndrome">Sjögren's Syndrome</option>
 <option value="Vasculitis">Vasculitis</option>
+<option value="Alopecia Areata">Alopecia Areata</option>
+<option value="Goodpasture Syndrome">Goodpasture Syndrome</option>
+<option value="Antiphospholipid Syndrome">Antiphospholipid Syndrome</option>
+<option value="Polymyositis">Polymyositis</option>
+<option value="Dermatomyositis">Dermatomyositis</option>
+<option value="Hashimoto's Thyroiditis">Hashimoto's Thyroiditis</option>
+<option value="Graves' Disease">Graves' Disease</option>
 <option value="Chronic Fatigue Syndrome">Chronic Fatigue Syndrome</option>
 <option value="Lyme Disease">Lyme Disease</option>
+<option value="Chronic Sinusitis">Chronic Sinusitis</option>
+<option value="Post-Concussion Syndrome">Post-Concussion Syndrome</option>
+<option value="Long COVID">Long COVID</option>
+<option value="Fibrositis">Fibrositis</option>
+<option value="Post-Viral Fatigue Syndrome">Post-Viral Fatigue Syndrome</option>
 <option value="Ebola">Ebola</option>
 <option value="Zika Virus">Zika Virus</option>
 <option value="West Nile Virus">West Nile Virus</option>
 <option value="Antibiotic-Resistant Infections">Antibiotic-Resistant Infections</option>
+<option value="Chagas Disease">Chagas Disease</option>
+<option value="Leishmaniasis">Leishmaniasis</option>
+<option value="Schistosomiasis">Schistosomiasis</option>
+<option value="Buruli Ulcer">Buruli Ulcer</option>
+<option value="Dengue Hemorrhagic Fever">Dengue Hemorrhagic Fever</option>
+<option value="Tropical Spastic Paraparesis">Tropical Spastic Paraparesis</option>
 <option value="Prion Diseases">Prion Diseases</option>
 <option value="Neurofibromatosis">Neurofibromatosis</option>
+<option value="Mucopolysaccharidosis">Mucopolysaccharidosis</option>
+<option value="Gaucher Disease">Gaucher Disease</option>
+<option value="Fabry Disease">Fabry Disease</option>
+<option value="Pompe Disease">Pompe Disease</option>
+<option value="Niemann-Pick Disease">Niemann-Pick Disease</option>
+<option value="Acromegaly">Acromegaly</option>
+<option value="Marfan Syndrome">Marfan Syndrome</option>
+<option value="Porphyria">Porphyria</option>
+<option value="Wilson's Disease">Wilson's Disease</option>
+<option value="Huntington's Chorea">Huntington's Chorea</option>
+<option value="Adrenoleukodystrophy">Adrenoleukodystrophy</option>
+<option value="Batten Disease">Batten Disease</option>
+<option value="Charcot-Marie-Tooth Disease">Charcot-Marie-Tooth Disease</option>
+<option value="Friedreich's Ataxia">Friedreich's Ataxia</option>
+<option value="Dysautonomia">Dysautonomia</option>
+<option value="Erythromelalgia">Erythromelalgia</option>
+<option value="Hereditary Angioedema">Hereditary Angioedema</option>
+<option value="Kleine-Levin Syndrome">Kleine-Levin Syndrome</option>
+<option value="Moyamoya Disease">Moyamoya Disease</option>
+<option value="Stiff Person Syndrome">Stiff Person Syndrome</option>
+<option value="Tarlov Cysts">Tarlov Cysts</option>
+<option value="Trigeminal Neuralgia">Trigeminal Neuralgia</option>
+<option value="Cyclic Vomiting Syndrome">Cyclic Vomiting Syndrome</option>
+<option value="Mast Cell Activation Syndrome">Mast Cell Activation Syndrome</option>
+<option value="Lichen Planus">Lichen Planus</option>
+<option value="Chronic Inflammatory Demyelinating Polyneuropathy">Chronic Inflammatory Demyelinating Polyneuropathy</option>
+<option value="Postural Orthostatic Tachycardia Syndrome">Postural Orthostatic Tachycardia Syndrome</option>
+<option value="Eagle Syndrome">Eagle Syndrome</option>
+<option value="Superior Semicircular Canal Dehiscence">Superior Semicircular Canal Dehiscence</option>
+<option value="Hailey-Hailey Disease">Hailey-Hailey Disease</option>
                               </select>
+                                <!-- Custom searchable dropdown -->
+                                <div class="custom-dropdown-container">
+                                    <div class="relative">
+                                      <input type="text" id="disease-search" class="form-control" placeholder="Type to search diseases..." autocomplete="off">
+                                      <div id="disease-dropdown" class="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-64 overflow-y-auto hidden" style="min-width: 100%; max-width: max-content;">
+                                        <ul id="disease-list" class="py-1"></ul>
+                                      </div>
+                                    </div>
+                                  </div>
+         <!-- Disease information display area -->
+    <div id="disease-info" class="mt-6">
+        <p class="text-gray-600 dark:text-gray-300 text-center">
+          Select a disease to see details and funding progress
+        </p>
+      </div>
+    </div>
                           </section>
                           
 
@@ -1525,7 +1768,6 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
         setupEventListeners();
         displayFakeContributions();
         setupContributionsSidebar();
-        initializeDiseaseExplorer(); // New interactive body map
     }, 500);
 });
         
@@ -1674,79 +1916,221 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
        // Use mock data for testing
 function useMockDiseaseData() {
     diseaseAmounts = {
-        "Alzheimer's Disease": {amount: 500000, goal: 2000000, researchers: 12},
-        "Amyotrophic Lateral Sclerosis (ALS)": {amount: 300000, goal: 1500000, researchers: 8},
-        "Huntington's Disease": {amount: 250000, goal: 1000000, researchers: 5},
-        "Colour Vision Deficiency": {amount: 450000, goal: 1900000, researchers: 22},
-        "Cystic Fibrosis": {amount: 150000, goal: 800000, researchers: 6},
-        "Parkinson's Disease": {amount: 320000, goal: 1200000, researchers: 10},
-        "Multiple Sclerosis": {amount: 270000, goal: 1000000, researchers: 7},
-        "Type 1 Diabetes": {amount: 180000, goal: 900000, researchers: 9},
-        "Cancer": {amount: 550000, goal: 2500000, researchers: 15},
-        "HIV/AIDS": {amount: 460000, goal: 2000000, researchers: 11},
-        "Rheumatoid Arthritis": {amount: 290000, goal: 1000000, researchers: 8},
-        "Schizophrenia": {amount: 310000, goal: 1200000, researchers: 9},
-"Malaria": {amount: 420000, goal: 1800000, researchers: 18},
-"Tuberculosis": {amount: 380000, goal: 1700000, researchers: 14},
-"Dengue Fever": {amount: 290000, goal: 1300000, researchers: 11},
-"Sickle Cell Disease": {amount: 210000, goal: 1100000, researchers: 8},
-"Hemophilia": {amount: 180000, goal: 900000, researchers: 7},
-"Crohn's Disease": {amount: 230000, goal: 1200000, researchers: 9},
-"Ulcerative Colitis": {amount: 190000, goal: 950000, researchers: 7},
-"Muscular Dystrophy": {amount: 310000, goal: 1600000, researchers: 12},
-"Leukemia": {amount: 480000, goal: 2200000, researchers: 16},
-"Lymphoma": {amount: 420000, goal: 2000000, researchers: 14},
-"Pancreatic Cancer": {amount: 520000, goal: 2300000, researchers: 17},
-"Ovarian Cancer": {amount: 480000, goal: 2100000, researchers: 15},
-"Brain Cancer": {amount: 550000, goal: 2400000, researchers: 18},
-"COPD": {amount: 320000, goal: 1500000, researchers: 13},
-"Asthma": {amount: 270000, goal: 1300000, researchers: 11},
-"Dementia": {amount: 490000, goal: 2200000, researchers: 16},
-"Epilepsy": {amount: 280000, goal: 1400000, researchers: 10},
-"Narcolepsy": {amount: 190000, goal: 900000, researchers: 6},
-"Bipolar Disorder": {amount: 240000, goal: 1200000, researchers: 9},
-"Depression": {amount: 380000, goal: 1700000, researchers: 14},
-"Anxiety Disorders": {amount: 260000, goal: 1300000, researchers: 10},
-"PTSD": {amount: 230000, goal: 1100000, researchers: 8},
-"Osteoporosis": {amount: 210000, goal: 1000000, researchers: 7},
-"Osteoarthritis": {amount: 270000, goal: 1300000, researchers: 11},
-"Fibromyalgia": {amount: 190000, goal: 950000, researchers: 7},
-"Glaucoma": {amount: 240000, goal: 1200000, researchers: 9},
-"Macular Degeneration": {amount: 310000, goal: 1500000, researchers: 12},
-"Cataracts": {amount: 180000, goal: 900000, researchers: 6},
-"Retinitis Pigmentosa": {amount: 230000, goal: 1200000, researchers: 8},
-"Hearing Loss": {amount: 200000, goal: 1000000, researchers: 7},
-"Tinnitus": {amount: 170000, goal: 850000, researchers: 5},
-"Kidney Disease": {amount: 290000, goal: 1400000, researchers: 11},
-"Liver Cirrhosis": {amount: 260000, goal: 1300000, researchers: 10},
-"Hepatitis": {amount: 310000, goal: 1500000, researchers: 12},
-"Endometriosis": {amount: 220000, goal: 1100000, researchers: 8},
-"PCOS": {amount: 190000, goal: 950000, researchers: 7},
-"Inflammatory Bowel Disease": {amount: 240000, goal: 1200000, researchers: 9},
-"Celiac Disease": {amount: 180000, goal: 900000, researchers: 6},
-"Psoriasis": {amount: 210000, goal: 1000000, researchers: 8},
-"Eczema": {amount: 180000, goal: 900000, researchers: 6},
-"Vitiligo": {amount: 150000, goal: 800000, researchers: 5},
-"Scleroderma": {amount: 190000, goal: 950000, researchers: 7},
-"Spinal Cord Injury": {amount: 340000, goal: 1700000, researchers: 13},
-"Traumatic Brain Injury": {amount: 320000, goal: 1600000, researchers: 12},
-"Cerebral Palsy": {amount: 280000, goal: 1400000, researchers: 10},
-"ALS/Lou Gehrig's Disease": {amount: 310000, goal: 1500000, researchers: 11},
-"Guillain-Barré Syndrome": {amount: 190000, goal: 950000, researchers: 7},
-"Myasthenia Gravis": {amount: 170000, goal: 850000, researchers: 6},
-"Systemic Lupus Erythematosus": {amount: 260000, goal: 1300000, researchers: 10},
-"Sjögren's Syndrome": {amount: 180000, goal: 900000, researchers: 6},
-"Vasculitis": {amount: 210000, goal: 1000000, researchers: 8},
-"Chronic Fatigue Syndrome": {amount: 190000, goal: 950000, researchers: 7},
-"Lyme Disease": {amount: 230000, goal: 1100000, researchers: 9},
-"Ebola": {amount: 380000, goal: 1800000, researchers: 14},
-"Zika Virus": {amount: 310000, goal: 1500000, researchers: 12},
-"West Nile Virus": {amount: 240000, goal: 1200000, researchers: 9},
-"Antibiotic-Resistant Infections": {amount: 420000, goal: 2000000, researchers: 16},
-"Huntington's Chorea": {amount: 280000, goal: 1400000, researchers: 10},
-"Prion Diseases": {amount: 230000, goal: 1200000, researchers: 8},
-"Neurofibromatosis": {amount: 190000, goal: 950000, researchers: 7}
-    };
+    // Existing diseases
+    "Alzheimer's Disease": {amount: 1500000, goal: 8000000, researchers: 32},
+    "Amyotrophic Lateral Sclerosis (ALS)": {amount: 1200000, goal: 7500000, researchers: 28},
+    "Huntington's Disease": {amount: 950000, goal: 5000000, researchers: 25},
+    "Colour Vision Deficiency": {amount: 750000, goal: 3500000, researchers: 22},
+    "Cystic Fibrosis": {amount: 1350000, goal: 6800000, researchers: 26},
+    "Parkinson's Disease": {amount: 1720000, goal: 7200000, researchers: 30},
+    "Multiple Sclerosis": {amount: 1870000, goal: 8000000, researchers: 37},
+    "Type 1 Diabetes": {amount: 2180000, goal: 9000000, researchers: 39},
+    "Cancer": {amount: 3550000, goal: 12500000, researchers: 95},
+    "HIV/AIDS": {amount: 2460000, goal: 10000000, researchers: 61},
+    "Rheumatoid Arthritis": {amount: 1290000, goal: 6000000, researchers: 28},
+    "Schizophrenia": {amount: 1310000, goal: 7200000, researchers: 29},
+    
+    // Additional common diseases
+    "Malaria": {amount: 1420000, goal: 7800000, researchers: 48},
+    "Tuberculosis": {amount: 1380000, goal: 7700000, researchers: 44},
+    "Dengue Fever": {amount: 1190000, goal: 6300000, researchers: 31},
+    "Sickle Cell Disease": {amount: 1210000, goal: 5100000, researchers: 28},
+    "Hemophilia": {amount: 1180000, goal: 5900000, researchers: 27},
+    "Crohn's Disease": {amount: 1230000, goal: 6200000, researchers: 29},
+    "Ulcerative Colitis": {amount: 1190000, goal: 5950000, researchers: 27},
+    "Muscular Dystrophy": {amount: 1310000, goal: 6600000, researchers: 32},
+    
+    // Cancer types
+    "Leukemia": {amount: 2480000, goal: 9200000, researchers: 46},
+    "Lymphoma": {amount: 2420000, goal: 9000000, researchers: 44},
+    "Pancreatic Cancer": {amount: 2520000, goal: 9300000, researchers: 47},
+    "Ovarian Cancer": {amount: 2480000, goal: 9100000, researchers: 45},
+    "Brain Cancer": {amount: 2550000, goal: 9400000, researchers: 48},
+    "Lung Cancer": {amount: 2680000, goal: 9800000, researchers: 52},
+    "Colorectal Cancer": {amount: 2450000, goal: 8900000, researchers: 43},
+    "Breast Cancer": {amount: 2890000, goal: 10200000, researchers: 57},
+    "Prostate Cancer": {amount: 2350000, goal: 8700000, researchers: 41},
+    "Skin Cancer/Melanoma": {amount: 1950000, goal: 7900000, researchers: 35},
+    "Bladder Cancer": {amount: 1750000, goal: 7500000, researchers: 31},
+    "Kidney Cancer": {amount: 1850000, goal: 7700000, researchers: 33},
+    "Liver Cancer": {amount: 2150000, goal: 8500000, researchers: 39},
+    "Throat Cancer": {amount: 1650000, goal: 7300000, researchers: 29},
+    "Bone Cancer": {amount: 1850000, goal: 7700000, researchers: 33},
+    
+    // Respiratory conditions
+    "COPD": {amount: 1320000, goal: 6500000, researchers: 33},
+    "Asthma": {amount: 1270000, goal: 6300000, researchers: 31},
+    "Pulmonary Fibrosis": {amount: 1250000, goal: 6100000, researchers: 27},
+    "Emphysema": {amount: 1180000, goal: 5800000, researchers: 24},
+    "Cystic Bronchiectasis": {amount: 950000, goal: 5200000, researchers: 19},
+    "Sleep Apnea": {amount: 850000, goal: 4500000, researchers: 16},
+    
+    // Neurological disorders
+    "Dementia": {amount: 1990000, goal: 8200000, researchers: 46},
+    "Epilepsy": {amount: 1280000, goal: 6400000, researchers: 30},
+    "Narcolepsy": {amount: 890000, goal: 4900000, researchers: 16},
+    "Migraine": {amount: 1150000, goal: 5800000, researchers: 25},
+    "Essential Tremor": {amount: 780000, goal: 4200000, researchers: 14},
+    "Dystonia": {amount: 820000, goal: 4500000, researchers: 15},
+    "Ataxia": {amount: 750000, goal: 4000000, researchers: 13},
+    "Multiple System Atrophy": {amount: 890000, goal: 4700000, researchers: 17},
+    "Progressive Supranuclear Palsy": {amount: 720000, goal: 3800000, researchers: 12},
+    
+    // Mental health conditions
+    "Bipolar Disorder": {amount: 1240000, goal: 6200000, researchers: 29},
+    "Depression": {amount: 1380000, goal: 6700000, researchers: 34},
+    "Anxiety Disorders": {amount: 1260000, goal: 6300000, researchers: 30},
+    "PTSD": {amount: 1230000, goal: 6100000, researchers: 28},
+    "OCD": {amount: 980000, goal: 5100000, researchers: 21},
+    "Borderline Personality Disorder": {amount: 870000, goal: 4700000, researchers: 18},
+    "Autism Spectrum Disorders": {amount: 1450000, goal: 7200000, researchers: 36},
+    "ADHD": {amount: 1150000, goal: 5800000, researchers: 26},
+    "Eating Disorders": {amount: 920000, goal: 4900000, researchers: 19},
+    
+    // Bone & joint conditions
+    "Osteoporosis": {amount: 1210000, goal: 6000000, researchers: 27},
+    "Osteoarthritis": {amount: 1270000, goal: 6300000, researchers: 31},
+    "Fibromyalgia": {amount: 1190000, goal: 5950000, researchers: 27},
+    "Ankylosing Spondylitis": {amount: 980000, goal: 5100000, researchers: 20},
+    "Gout": {amount: 750000, goal: 4000000, researchers: 14},
+    "Ehlers-Danlos Syndrome": {amount: 820000, goal: 4400000, researchers: 16},
+    "Osteogenesis Imperfecta": {amount: 780000, goal: 4100000, researchers: 15},
+    
+    // Eye conditions
+    "Glaucoma": {amount: 1240000, goal: 6200000, researchers: 29},
+    "Macular Degeneration": {amount: 1310000, goal: 6500000, researchers: 32},
+    "Cataracts": {amount: 1180000, goal: 5900000, researchers: 26},
+    "Retinitis Pigmentosa": {amount: 1230000, goal: 6200000, researchers: 28},
+    "Diabetic Retinopathy": {amount: 1280000, goal: 6300000, researchers: 30},
+    "Keratoconus": {amount: 850000, goal: 4500000, researchers: 17},
+    "Usher Syndrome": {amount: 780000, goal: 4200000, researchers: 15},
+    "Stargardt Disease": {amount: 720000, goal: 3900000, researchers: 13},
+    
+    // Ear conditions
+    "Hearing Loss": {amount: 1200000, goal: 6000000, researchers: 27},
+    "Tinnitus": {amount: 1170000, goal: 5850000, researchers: 25},
+    "Ménière's Disease": {amount: 890000, goal: 4700000, researchers: 18},
+    "Auditory Processing Disorder": {amount: 850000, goal: 4500000, researchers: 16},
+    "Auditory Neuropathy": {amount: 780000, goal: 4200000, researchers: 14},
+    
+    // Kidney & liver conditions
+    "Kidney Disease": {amount: 1290000, goal: 6400000, researchers: 31},
+    "Liver Cirrhosis": {amount: 1260000, goal: 6300000, researchers: 30},
+    "Hepatitis": {amount: 1310000, goal: 6500000, researchers: 32},
+    "Polycystic Kidney Disease": {amount: 1150000, goal: 5800000, researchers: 25},
+    "Primary Biliary Cholangitis": {amount: 980000, goal: 5000000, researchers: 20},
+    "Primary Sclerosing Cholangitis": {amount: 920000, goal: 4800000, researchers: 18},
+    "Nephrotic Syndrome": {amount: 850000, goal: 4500000, researchers: 16},
+    
+    // Women's health
+    "Endometriosis": {amount: 1220000, goal: 6100000, researchers: 28},
+    "PCOS": {amount: 1190000, goal: 5950000, researchers: 27},
+    "Uterine Fibroids": {amount: 980000, goal: 5000000, researchers: 20},
+    "Adenomyosis": {amount: 850000, goal: 4500000, researchers: 16},
+    "Vulvodynia": {amount: 780000, goal: 4100000, researchers: 14},
+    "Dysmenorrhea": {amount: 720000, goal: 3800000, researchers: 12},
+    "Vaginismus": {amount: 680000, goal: 3600000, researchers: 11},
+    
+    // Digestive disorders
+    "Inflammatory Bowel Disease": {amount: 1240000, goal: 6200000, researchers: 29},
+    "Celiac Disease": {amount: 1180000, goal: 5900000, researchers: 26},
+    "Irritable Bowel Syndrome": {amount: 1050000, goal: 5500000, researchers: 23},
+    "Gastroparesis": {amount: 920000, goal: 4800000, researchers: 18},
+    "Chronic Constipation": {amount: 780000, goal: 4100000, researchers: 14},
+    "Chronic Pancreatitis": {amount: 980000, goal: 5000000, researchers: 20},
+    "Diverticulitis": {amount: 850000, goal: 4500000, researchers: 16},
+    "Gastroesophageal Reflux Disease": {amount: 920000, goal: 4800000, researchers: 18},
+    
+    // Skin conditions
+    "Psoriasis": {amount: 1210000, goal: 6000000, researchers: 28},
+    "Eczema": {amount: 1180000, goal: 5900000, researchers: 26},
+    "Vitiligo": {amount: 1150000, goal: 5800000, researchers: 25},
+    "Scleroderma": {amount: 1190000, goal: 5950000, researchers: 27},
+    "Hidradenitis Suppurativa": {amount: 850000, goal: 4500000, researchers: 16},
+    "Pemphigus": {amount: 780000, goal: 4100000, researchers: 14},
+    "Epidermolysis Bullosa": {amount: 920000, goal: 4800000, researchers: 18},
+    "Rosacea": {amount: 850000, goal: 4500000, researchers: 16},
+    
+    // Injuries & physical conditions
+    "Spinal Cord Injury": {amount: 1340000, goal: 6700000, researchers: 33},
+    "Traumatic Brain Injury": {amount: 1320000, goal: 6600000, researchers: 32},
+    "Cerebral Palsy": {amount: 1280000, goal: 6400000, researchers: 30},
+    "Chronic Pain Syndromes": {amount: 1250000, goal: 6300000, researchers: 29},
+    "Complex Regional Pain Syndrome": {amount: 980000, goal: 5000000, researchers: 20},
+    "Phantom Limb Pain": {amount: 850000, goal: 4500000, researchers: 16},
+    "Paralysis": {amount: 1150000, goal: 5800000, researchers: 25},
+    
+    // Autoimmune disorders
+    "Guillain-Barré Syndrome": {amount: 1190000, goal: 5950000, researchers: 27},
+    "Myasthenia Gravis": {amount: 1170000, goal: 5850000, researchers: 26},
+    "Systemic Lupus Erythematosus": {amount: 1260000, goal: 6300000, researchers: 30},
+    "Sjögren's Syndrome": {amount: 1180000, goal: 5900000, researchers: 26},
+    "Vasculitis": {amount: 1210000, goal: 6000000, researchers: 28},
+    "Alopecia Areata": {amount: 920000, goal: 4800000, researchers: 18},
+    "Goodpasture Syndrome": {amount: 780000, goal: 4100000, researchers: 14},
+    "Antiphospholipid Syndrome": {amount: 850000, goal: 4500000, researchers: 16},
+    "Polymyositis": {amount: 820000, goal: 4300000, researchers: 15},
+    "Dermatomyositis": {amount: 850000, goal: 4500000, researchers: 16},
+    "Hashimoto's Thyroiditis": {amount: 920000, goal: 4800000, researchers: 18},
+    "Graves' Disease": {amount: 950000, goal: 5000000, researchers: 19},
+    
+    // Chronic conditions
+    "Chronic Fatigue Syndrome": {amount: 1190000, goal: 5950000, researchers: 27},
+    "Lyme Disease": {amount: 1230000, goal: 6100000, researchers: 29},
+    "Chronic Sinusitis": {amount: 850000, goal: 4500000, researchers: 16},
+    "Post-Concussion Syndrome": {amount: 920000, goal: 4800000, researchers: 18},
+    "Long COVID": {amount: 1450000, goal: 7200000, researchers: 36},
+    "Fibrositis": {amount: 780000, goal: 4100000, researchers: 14},
+    "Post-Viral Fatigue Syndrome": {amount: 920000, goal: 4800000, researchers: 18},
+    
+    // Infectious diseases
+    "Ebola": {amount: 1380000, goal: 6800000, researchers: 34},
+    "Zika Virus": {amount: 1310000, goal: 6500000, researchers: 32},
+    "West Nile Virus": {amount: 1240000, goal: 6200000, researchers: 29},
+    "Antibiotic-Resistant Infections": {amount: 1420000, goal: 7000000, researchers: 36},
+    "Chagas Disease": {amount: 980000, goal: 5000000, researchers: 20},
+    "Leishmaniasis": {amount: 920000, goal: 4800000, researchers: 18},
+    "Schistosomiasis": {amount: 850000, goal: 4500000, researchers: 16},
+    "Buruli Ulcer": {amount: 780000, goal: 4100000, researchers: 14},
+    "Dengue Hemorrhagic Fever": {amount: 980000, goal: 5000000, researchers: 20},
+    "Tropical Spastic Paraparesis": {amount: 720000, goal: 3800000, researchers: 12},
+    
+    // Rare diseases
+    "Prion Diseases": {amount: 1230000, goal: 6200000, researchers: 28},
+    "Neurofibromatosis": {amount: 1190000, goal: 5950000, researchers: 27},
+    "Mucopolysaccharidosis": {amount: 980000, goal: 5000000, researchers: 20},
+    "Gaucher Disease": {amount: 920000, goal: 4800000, researchers: 18},
+    "Fabry Disease": {amount: 850000, goal: 4500000, researchers: 16},
+    "Pompe Disease": {amount: 880000, goal: 4600000, researchers: 17},
+    "Niemann-Pick Disease": {amount: 820000, goal: 4300000, researchers: 15},
+    "Acromegaly": {amount: 780000, goal: 4100000, researchers: 14},
+    "Marfan Syndrome": {amount: 850000, goal: 4500000, researchers: 16},
+    "Porphyria": {amount: 780000, goal: 4100000, researchers: 14},
+    "Wilson's Disease": {amount: 820000, goal: 4300000, researchers: 15},
+    "Huntington's Chorea": {amount: 1280000, goal: 6400000, researchers: 30},
+    "Adrenoleukodystrophy": {amount: 780000, goal: 4100000, researchers: 14},
+    "Batten Disease": {amount: 850000, goal: 4500000, researchers: 16},
+    "Charcot-Marie-Tooth Disease": {amount: 920000, goal: 4800000, researchers: 18},
+    "Friedreich's Ataxia": {amount: 880000, goal: 4600000, researchers: 17},
+    
+    // Lesser-known conditions
+    "Dysautonomia": {amount: 850000, goal: 4500000, researchers: 16},
+    "Erythromelalgia": {amount: 720000, goal: 3800000, researchers: 12},
+    "Hereditary Angioedema": {amount: 780000, goal: 4100000, researchers: 14},
+    "Kleine-Levin Syndrome": {amount: 680000, goal: 3600000, researchers: 11},
+    "Moyamoya Disease": {amount: 720000, goal: 3800000, researchers: 12},
+    "Stiff Person Syndrome": {amount: 750000, goal: 4000000, researchers: 13},
+    "Tarlov Cysts": {amount: 680000, goal: 3600000, researchers: 11},
+    "Trigeminal Neuralgia": {amount: 780000, goal: 4100000, researchers: 14},
+    "Cyclic Vomiting Syndrome": {amount: 720000, goal: 3800000, researchers: 12},
+    "Mast Cell Activation Syndrome": {amount: 850000, goal: 4500000, researchers: 16},
+    "Lichen Planus": {amount: 720000, goal: 3800000, researchers: 12},
+    "Chronic Inflammatory Demyelinating Polyneuropathy": {amount: 850000, goal: 4500000, researchers: 16},
+    "Postural Orthostatic Tachycardia Syndrome": {amount: 920000, goal: 4800000, researchers: 18},
+    "Eagle Syndrome": {amount: 650000, goal: 3400000, researchers: 10},
+    "Superior Semicircular Canal Dehiscence": {amount: 680000, goal: 3600000, researchers: 11},
+    "Hailey-Hailey Disease": {amount: 650000, goal: 3400000, researchers: 10}
+};
     
     // Only update these elements if they exist in the DOM
     const diseaseSelect = document.getElementById('disease');
@@ -1802,46 +2186,61 @@ function updateSelectedDiseaseStats(disease) {
 }
 
 // Update contributions list in sidebar
+// Function to update the contributions sidebar
+// Add this function to your JavaScript or replace the existing one
 function updateContributionsList() {
     const contributionsList = document.getElementById('contributions-list');
+    if (!contributionsList) return;
+    
     contributionsList.innerHTML = '';
     
-    // Get diseases sorted by funding percentage
-    const sortedDiseases = Object.keys(diseaseAmounts).sort((a, b) => {
-        const percentA = (diseaseAmounts[a].amount / diseaseAmounts[a].goal) * 100;
-        const percentB = (diseaseAmounts[b].amount / diseaseAmounts[b].goal) * 100;
-        return percentB - percentA; // Sort descending
-    });
+    // Get top diseases by funding percentage (relative to goal)
+    const topDiseases = Object.keys(diseaseAmounts)
+        .map(disease => ({
+            name: disease,
+            amount: diseaseAmounts[disease].amount,
+            goal: diseaseAmounts[disease].goal,
+            percentage: (diseaseAmounts[disease].amount / diseaseAmounts[disease].goal) * 100
+        }))
+        .sort((a, b) => b.percentage - a.percentage)
+        .slice(0, 400); // Show top 5 diseases
     
-    // Take top 5 diseases for the sidebar
-    const topDiseases = sortedDiseases.slice(0, 65);
-    
-    // Create elements for each disease
+    // Add each disease to the sidebar
     topDiseases.forEach(disease => {
-        const diseaseData = diseaseAmounts[disease];
-        const percentage = Math.min(100, Math.round((diseaseData.amount / diseaseData.goal) * 100));
-        const color = percentage > 75 ? 'bg-green-500' : percentage > 50 ? 'bg-blue-500' : percentage > 25 ? 'bg-yellow-500' : 'bg-red-500';
-        
-        // Format numbers in millions with "M" suffix
-        const amountInM = (diseaseData.amount / 1000000).toFixed(1) + 'M';
-        const goalInM = (diseaseData.goal / 1000000).toFixed(1) + 'M';
+        const percentage = Math.round(disease.percentage);
+        const color = percentage > 75 ? 'bg-green-500' : 
+                    percentage > 50 ? 'bg-blue-500' : 
+                    percentage > 25 ? 'bg-yellow-500' : 
+                    'bg-red-500';
         
         const diseaseElement = document.createElement('div');
+        diseaseElement.className = 'card';
         diseaseElement.innerHTML = `
-            <div class="mb-1 flex justify-between">
-                <span class="text-sm font-medium">${disease}</span>
-                <span class="text-sm font-medium">${percentage}%</span>
-            </div>
-            <div class="progress h-2 mb-1">
-                <div class="progress-bar ${color}" style="width: ${percentage}%"></div>
-            </div>
-            <div class="text-xs text-gray-500 dark:text-gray-400">
-                $${amountInM} of $${goalInM}
+            <div class="card-body p-3">
+                <div class="flex justify-between items-center mb-1">
+                    <h4 class="font-medium text-sm">${disease.name}</h4>
+                    <span class="text-xs font-medium">${percentage}%</span>
+                </div>
+                <div class="progress h-2 mb-1">
+                    <div class="progress-bar ${color}" style="width: ${percentage}%"></div>
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">
+                    $${disease.amount.toLocaleString()} of $${disease.goal.toLocaleString()}
+                </div>
             </div>
         `;
         
         contributionsList.appendChild(diseaseElement);
     });
+    
+    // If there's no data, show a message
+    if (topDiseases.length === 0) {
+        contributionsList.innerHTML = `
+            <div class="p-4 text-center text-gray-500 dark:text-gray-400">
+                <p>No disease funding data available.</p>
+            </div>
+        `;
+    }
 }
         
         // Set up event listeners for forms and buttons
@@ -2707,6 +3106,184 @@ document.getElementById('loading-overlay').classList.add('hidden');
 function validateEmail(email) {
 const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 return re.test(email);
+}
+document.addEventListener('DOMContentLoaded', function() {
+  initializeSearchableDropdown();
+});
+
+function initializeSearchableDropdown() {
+  const diseaseSelect = document.getElementById('disease');
+  const diseaseSearch = document.getElementById('disease-search');
+  const diseaseDropdown = document.getElementById('disease-dropdown');
+  const diseaseList = document.getElementById('disease-list');
+  const diseaseInfo = document.getElementById('disease-info');
+  
+  // Get all diseases from the original select
+  const diseases = Array.from(diseaseSelect.options).map(option => ({
+    value: option.value,
+    text: option.textContent
+  }));
+  
+  // Populate the dropdown list
+  function populateDropdown(filterText = '') {
+    // Clear the current list
+    diseaseList.innerHTML = '';
+    
+    // Filter diseases based on search text
+    const filteredDiseases = diseases.filter(disease => 
+      disease.text.toLowerCase().includes(filterText.toLowerCase())
+    );
+    
+    // Add matching diseases to the dropdown
+    filteredDiseases.forEach(disease => {
+      const listItem = document.createElement('li');
+      listItem.className = 'px-4 py-2 hover:bg-gray-100 cursor-pointer';
+      listItem.textContent = disease.text;
+      listItem.setAttribute('data-value', disease.value);
+      
+      listItem.addEventListener('click', function() {
+        // Update the hidden select
+        diseaseSelect.value = disease.value;
+        
+        // Trigger change event on the select to update any dependent UI
+        const event = new Event('change', { bubbles: true });
+        diseaseSelect.dispatchEvent(event);
+        
+        // Update the search input
+        diseaseSearch.value = disease.text;
+        
+        // Hide the dropdown
+        diseaseDropdown.classList.add('hidden');
+        
+        // Update disease info
+        updateDiseaseInfo(disease.value);
+      });
+      
+      diseaseList.appendChild(listItem);
+    });
+    
+    // Show dropdown if we have filtered results
+    if (filteredDiseases.length > 0) {
+      diseaseDropdown.classList.remove('hidden');
+    } else {
+      diseaseDropdown.classList.add('hidden');
+    }
+    
+    // Highlight first item if we have results
+    if (filteredDiseases.length > 0) {
+        diseaseList.firstChild.classList.add('bg-gray-100');
+    }
+  }
+  
+  // Update disease info section
+  function updateDiseaseInfo(diseaseValue) {
+    const diseaseData = diseaseAmounts[diseaseValue];
+    
+    if (diseaseData) {
+      // Calculate percentage
+      const percentage = Math.min(100, Math.round((diseaseData.amount / diseaseData.goal) * 100));
+      const color = percentage > 75 ? 'bg-green-500' : 
+                   percentage > 50 ? 'bg-blue-500' : 
+                   percentage > 25 ? 'bg-yellow-500' : 
+                   'bg-red-500';
+                   
+      diseaseInfo.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <h4 class="text-lg font-medium">${diseaseValue}</h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">${diseaseData.researchers} active researchers</p>
+            </div>
+            <div class="text-right">
+              <div class="text-2xl font-bold">$${diseaseData.amount.toLocaleString()}</div>
+              <p class="text-sm text-gray-500 dark:text-gray-400">of $${diseaseData.goal.toLocaleString()} goal</p>
+            </div>
+          </div>
+          
+          <div>
+            <div class="progress h-3">
+              <div class="progress-bar ${color}" style="width: ${percentage}%"></div>
+            </div>
+            <div class="mt-1 text-right text-sm font-medium">
+              ${percentage}% funded
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      diseaseInfo.innerHTML = `
+        <p class="text-gray-600 dark:text-gray-300 text-center">
+          Disease information not available
+        </p>
+      `;
+    }
+  }
+  
+  // Set up event listeners
+  diseaseSearch.addEventListener('focus', function() {
+    populateDropdown(this.value);
+  });
+  
+  diseaseSearch.addEventListener('input', function() {
+    populateDropdown(this.value);
+  });
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!diseaseSearch.contains(event.target) && !diseaseDropdown.contains(event.target)) {
+      diseaseDropdown.classList.add('hidden');
+    }
+  });
+  
+  // Handle keyboard navigation
+  diseaseSearch.addEventListener('keydown', function(event) {
+    const activeItem = diseaseList.querySelector('.bg-gray-100, .dark\\:bg-gray-700');
+    
+    switch(event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        if (activeItem && activeItem.nextElementSibling) {
+          activeItem.classList.remove('bg-gray-100', 'dark:bg-gray-700');
+          activeItem.nextElementSibling.classList.add('bg-gray-100', 'dark:bg-gray-700');
+          activeItem.nextElementSibling.scrollIntoView({ block: 'nearest' });
+        }
+        break;
+        
+      case 'ArrowUp':
+        event.preventDefault();
+        if (activeItem && activeItem.previousElementSibling) {
+          activeItem.classList.remove('bg-gray-100', 'dark:bg-gray-700');
+          activeItem.previousElementSibling.classList.add('bg-gray-100', 'dark:bg-gray-700');
+          activeItem.previousElementSibling.scrollIntoView({ block: 'nearest' });
+        }
+        break;
+        
+      case 'Enter':
+        event.preventDefault();
+        if (activeItem) {
+          activeItem.click();
+        }
+        break;
+        
+      case 'Escape':
+        diseaseDropdown.classList.add('hidden');
+        break;
+    }
+  });
+  
+  // Connect to the contribute form if it exists
+  const contributeForm = document.getElementById('contribute-form');
+  if (contributeForm) {
+    // When a disease is selected in our custom dropdown, update selected disease stats
+    diseaseSelect.addEventListener('change', function() {
+      if (typeof updateSelectedDiseaseStats === 'function') {
+        updateSelectedDiseaseStats(this.value);
+      }
+    });
+  }
+  
+  // Initial population
+  populateDropdown();
 }
 </script>
 
