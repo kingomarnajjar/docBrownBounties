@@ -6,6 +6,7 @@
     <title>Accelerating Medical Breakthroughs</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         /* Core Variables */
         :root {
@@ -488,6 +489,7 @@
             border-color: var(--primary);
             background-color: var(--primary);
         }
+        
     </style>
 </head>
 <body>
@@ -700,9 +702,13 @@
                             </select>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="disease" class="form-label">Select a Disease:</label>
-                            <select id="disease" name="disease" required class="form-control">
+                        <section class="card mb-8" id="disease-explorer">
+                            <div class="card-header">
+                              <h2 class="text-2xl font-bold">Select a Disease to Support</h2>
+                            </div>
+                            <div class="card-body">
+                              <!-- Keep the original select element for form compatibility but hide it -->
+                              <select id="disease" name="disease" required class="form-control hidden">
                                 <option value="Alzheimer's Disease">Alzheimer's Disease</option>
                                 <option value="Amyotrophic Lateral Sclerosis (ALS)">Amyotrophic Lateral Sclerosis (ALS)</option>
                                 <option value="Huntington's Disease">Huntington's Disease</option>
@@ -715,9 +721,11 @@
                                 <option value="HIV/AIDS">HIV/AIDS</option>
                                 <option value="Lupus">Lupus</option>
                                 <option value="Rheumatoid Arthritis">Rheumatoid Arthritis</option>
-                            </select>
-                        </div>
-                        
+                              </select>
+                          </section>
+                          
+
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="form-group">
                                 <label for="name" class="form-label">Your Name:</label>
@@ -934,7 +942,7 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
                 </p>
                 <ul class="text-sm list-disc pl-5 mb-4 text-gray-600 dark:text-gray-400">
                     <li>Makes your breakthrough accessible to help as many people as possible</li>
-                    <li>Requires commercial users to pay 7.5% royalties back to the research pool</li>
+                    <li>Requires commercial users to pay 10% royalties back to the research pool</li>
                     <li>Ensures you receive full attribution as the discoverer</li>
                     <li>Generates ongoing funding for future research in your field</li>
                 </ul>
@@ -1130,7 +1138,7 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
                     Sustainable Funding
                 </h4>
                 <p class="text-gray-600 dark:text-gray-400">
-                    Commercial implementers contribute 7.5% of related revenue back to research, creating a self-sustaining cycle.
+                    Commercial implementers contribute 10% of related revenue back to research, creating a self-sustaining cycle.
                 </p>
             </div>
         </div>
@@ -1257,7 +1265,7 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
 <h4 class="text-lg font-bold mb-3">Core Principles</h4>
 <ol class="list-decimal pl-5 space-y-2 text-gray-600 dark:text-gray-300">
     <li><strong>Open Access:</strong> All medical cures and treatments submitted through the platform and receiving prize money must be made publicly accessible.</li>
-    <li><strong>Royalty System:</strong> Commercial entities that utilize OMAR-licensed treatments for profit must contribute 7.5% of related revenue back to the disease-specific research pool.</li>
+    <li><strong>Royalty System:</strong> Commercial entities that utilize OMAR-licensed treatments for profit must contribute 10% of related revenue back to the disease-specific research pool.</li>
     <li><strong>Attribution:</strong> All implementations must properly acknowledge the original researchers and the platform's contribution.</li>
     <li><strong>Reinvestment:</strong> Royalties flow back into research pools, creating a self-sustaining funding cycle for future breakthroughs.</li>
 </ol>
@@ -1278,7 +1286,7 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
 <h4 class="text-lg font-bold mb-3">For Commercial Implementers</h4>
 <ul class="list-disc pl-5 space-y-1 text-gray-600 dark:text-gray-300">
     <li>Free to use OMAR-licensed cures in products and services</li>
-<li>Must contribute 7.5% of gross revenue from OMAR-licensed treatments back to the platform</li>
+<li>Must contribute 10% of gross revenue from OMAR-licensed treatments back to the platform</li>
     <li>Must properly attribute original researchers and the platform</li>
     <li>May improve upon the original treatment (improvements also fall under OMAR)</li>
 </ul>
@@ -1377,14 +1385,20 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
         
         // Initialize on document load
         document.addEventListener('DOMContentLoaded', function() {
-            initializeStripe();
-            fetchDiseaseData();
-            setupEventListeners();
-            initializeDarkMode();
-            displayFakeContributions();
-            setupModals();
-            setupContributionsSidebar();
-        });
+    // First load core site functionality
+    initializeStripe();
+    fetchDiseaseData();
+    initializeDarkMode();
+    setupModals();
+    
+    // Then set up the enhanced features after a slight delay
+    setTimeout(() => {
+        setupEventListeners();
+        displayFakeContributions();
+        setupContributionsSidebar();
+        initializeDiseaseExplorer(); // New interactive body map
+    }, 500);
+});
         
         // Initialize dark mode from localStorage
         function initializeDarkMode() {
@@ -1528,26 +1542,29 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
             }, 1000);
         }
         
-        // Use mock data for testing
-        function useMockDiseaseData() {
+       // Use mock data for testing
+function useMockDiseaseData() {
     diseaseAmounts = {
-        "Alzheimer's Disease": {amount: 5000000, goal: 20000000, researchers: 12},
-        "Amyotrophic Lateral Sclerosis (ALS)": {amount: 3000000, goal: 15000000, researchers: 8},
-        "Huntington's Disease": {amount: 2500000, goal: 10000000, researchers: 5},
-        "Cystic Fibrosis": {amount: 1500000, goal: 8000000, researchers: 6},
-        "Parkinson's Disease": {amount: 3200000, goal: 12000000, researchers: 10},
-        "Multiple Sclerosis": {amount: 2700000, goal: 10000000, researchers: 7},
-        "Type 1 Diabetes": {amount: 1800000, goal: 9000000, researchers: 9},
-        "Cancer": {amount: 5500000, goal: 25000000, researchers: 15},
-        "HIV/AIDS": {amount: 4600000, goal: 20000000, researchers: 11},
-        "Rheumatoid Arthritis": {amount: 2900000, goal: 10000000, researchers: 8},
-        "Schizophrenia": {amount: 3100000, goal: 12000000, researchers: 9},
+        "Alzheimer's Disease": {amount: 500000, goal: 2000000, researchers: 12},
+        "Amyotrophic Lateral Sclerosis (ALS)": {amount: 300000, goal: 1500000, researchers: 8},
+        "Huntington's Disease": {amount: 250000, goal: 1000000, researchers: 5},
+        "Cystic Fibrosis": {amount: 150000, goal: 800000, researchers: 6},
+        "Parkinson's Disease": {amount: 320000, goal: 1200000, researchers: 10},
+        "Multiple Sclerosis": {amount: 270000, goal: 1000000, researchers: 7},
+        "Type 1 Diabetes": {amount: 180000, goal: 900000, researchers: 9},
+        "Cancer": {amount: 550000, goal: 2500000, researchers: 15},
+        "HIV/AIDS": {amount: 460000, goal: 2000000, researchers: 11},
+        "Rheumatoid Arthritis": {amount: 290000, goal: 1000000, researchers: 8},
+        "Schizophrenia": {amount: 310000, goal: 1200000, researchers: 9},
     };
     
-    updateSelectedDiseaseStats(document.getElementById('disease').value);
+    // Only update these elements if they exist in the DOM
+    const diseaseSelect = document.getElementById('disease');
+    if (diseaseSelect && diseaseSelect.value) {
+        updateSelectedDiseaseStats(diseaseSelect.value);
+    }
     updateContributionsList();
 }
-      
         
        
         
@@ -2502,5 +2519,6 @@ const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 return re.test(email);
 }
 </script>
+
 </body>
 </html>
