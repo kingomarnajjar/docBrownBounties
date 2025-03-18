@@ -939,7 +939,7 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
                     <li>Generates ongoing funding for future research in your field</li>
                 </ul>
                 <div class="custom-control custom-checkbox mt-3">
-                    <input type="checkbox" id="agree-to-OMAR" name="agree-to-omar" required class="custom-control-input">
+                    <input type="checkbox" id="agree-to-omar" name="agree-to-omar" required class="custom-control-input">
                     <label class="custom-control-label" for="agree-to-omar">
                         I understand and agree to the Open Medical Advancement Royalty terms
                     </label>
@@ -1530,63 +1530,112 @@ Developed a breakthrough treatment? Submit your research here to claim your priz
         
         // Use mock data for testing
         function useMockDiseaseData() {
-            diseaseAmounts = {
-                "Alzheimer's Disease": {amount: 500000, goal: 2000000, researchers: 12},
-                "Amyotrophic Lateral Sclerosis (ALS)": {amount: 300000, goal: 1500000, researchers: 8},
-                "Huntington's Disease": {amount: 250000, goal: 1000000, researchers: 5},
-                "Cystic Fibrosis": {amount: 150000, goal: 800000, researchers: 6},
-                "Parkinson's Disease": {amount: 320000, goal: 1200000, researchers: 10},
-                "Multiple Sclerosis": {amount: 270000, goal: 1000000, researchers: 7},
-                "Type 1 Diabetes": {amount: 180000, goal: 900000, researchers: 9},
-                "Cancer": {amount: 550000, goal: 2500000, researchers: 15},
-                "HIV/AIDS": {amount: 460000, goal: 2000000, researchers: 11},
-                "Rheumatoid Arthritis": {amount: 290000, goal: 1000000, researchers: 8},
-                "Schizophrenia": {amount: 310000, goal: 1200000, researchers: 9},
-            };
-            
-            updateSelectedDiseaseStats(document.getElementById('disease').value);
-            updateContributionsList();
-        }
+    diseaseAmounts = {
+        "Alzheimer's Disease": {amount: 5000000, goal: 20000000, researchers: 12},
+        "Amyotrophic Lateral Sclerosis (ALS)": {amount: 3000000, goal: 15000000, researchers: 8},
+        "Huntington's Disease": {amount: 2500000, goal: 10000000, researchers: 5},
+        "Cystic Fibrosis": {amount: 1500000, goal: 8000000, researchers: 6},
+        "Parkinson's Disease": {amount: 3200000, goal: 12000000, researchers: 10},
+        "Multiple Sclerosis": {amount: 2700000, goal: 10000000, researchers: 7},
+        "Type 1 Diabetes": {amount: 1800000, goal: 9000000, researchers: 9},
+        "Cancer": {amount: 5500000, goal: 25000000, researchers: 15},
+        "HIV/AIDS": {amount: 4600000, goal: 20000000, researchers: 11},
+        "Rheumatoid Arthritis": {amount: 2900000, goal: 10000000, researchers: 8},
+        "Schizophrenia": {amount: 3100000, goal: 12000000, researchers: 9},
+    };
+    
+    updateSelectedDiseaseStats(document.getElementById('disease').value);
+    updateContributionsList();
+}
+      
         
        
         
         // Update selected disease stats
-        function updateSelectedDiseaseStats(disease) {
-            const statsContainer = document.getElementById('selected-disease-stats');
-            const diseaseData = diseaseAmounts[disease];
-            
-            if (diseaseData) {
-                // Calculate percentage
-                const percentage = Math.min(100, Math.round((diseaseData.amount / diseaseData.goal) * 100));
-                const color = percentage > 75 ? 'bg-green-500' : percentage > 50 ? 'bg-blue-500' : percentage > 25 ? 'bg-yellow-500' : 'bg-red-500';
-                
-                statsContainer.innerHTML = `
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h4 class="text-lg font-medium">${disease}</h4>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">${diseaseData.researchers} active researchers</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-2xl font-bold">$${diseaseData.amount.toLocaleString()}</div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">of $${diseaseData.goal.toLocaleString()} goal</p>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="progress h-3">
-                                <div class="progress-bar ${color}" style="width: ${percentage}%"></div>
-                            </div>
-                            <div class="mt-1 text-right text-sm font-medium">
-                                ${percentage}% funded
-                            </div>
-                        </div>
+        // Update selected disease stats
+function updateSelectedDiseaseStats(disease) {
+    const statsContainer = document.getElementById('selected-disease-stats');
+    const diseaseData = diseaseAmounts[disease];
+    
+    if (diseaseData) {
+        // Calculate percentage
+        const percentage = Math.min(100, Math.round((diseaseData.amount / diseaseData.goal) * 100));
+        const color = percentage > 75 ? 'bg-green-500' : percentage > 50 ? 'bg-blue-500' : percentage > 25 ? 'bg-yellow-500' : 'bg-red-500';
+        
+        // Format numbers in millions with "M" suffix
+        const amountInM = (diseaseData.amount / 1000000).toFixed(1) + 'M';
+        const goalInM = (diseaseData.goal / 1000000).toFixed(1) + 'M';
+        
+        statsContainer.innerHTML = `
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h4 class="text-lg font-medium">${disease}</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">${diseaseData.researchers} active researchers</p>
                     </div>
-                `;
-            } else {
-                statsContainer.innerHTML = `<span class="text-lg font-medium text-gray-600 dark:text-gray-300">Select a disease to see details</span>`;
-            }
-        }
+                    <div class="text-right">
+                        <div class="text-2xl font-bold">$${amountInM}</div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">of $${goalInM} goal</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="progress h-3">
+                        <div class="progress-bar ${color}" style="width: ${percentage}%"></div>
+                    </div>
+                    <div class="mt-1 text-right text-sm font-medium">
+                        ${percentage}% funded
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        statsContainer.innerHTML = `<span class="text-lg font-medium text-gray-600 dark:text-gray-300">Select a disease to see details</span>`;
+    }
+}
+
+// Update contributions list in sidebar
+function updateContributionsList() {
+    const contributionsList = document.getElementById('contributions-list');
+    contributionsList.innerHTML = '';
+    
+    // Get diseases sorted by funding percentage
+    const sortedDiseases = Object.keys(diseaseAmounts).sort((a, b) => {
+        const percentA = (diseaseAmounts[a].amount / diseaseAmounts[a].goal) * 100;
+        const percentB = (diseaseAmounts[b].amount / diseaseAmounts[b].goal) * 100;
+        return percentB - percentA; // Sort descending
+    });
+    
+    // Take top 5 diseases for the sidebar
+    const topDiseases = sortedDiseases.slice(0, 5);
+    
+    // Create elements for each disease
+    topDiseases.forEach(disease => {
+        const diseaseData = diseaseAmounts[disease];
+        const percentage = Math.min(100, Math.round((diseaseData.amount / diseaseData.goal) * 100));
+        const color = percentage > 75 ? 'bg-green-500' : percentage > 50 ? 'bg-blue-500' : percentage > 25 ? 'bg-yellow-500' : 'bg-red-500';
+        
+        // Format numbers in millions with "M" suffix
+        const amountInM = (diseaseData.amount / 1000000).toFixed(1) + 'M';
+        const goalInM = (diseaseData.goal / 1000000).toFixed(1) + 'M';
+        
+        const diseaseElement = document.createElement('div');
+        diseaseElement.innerHTML = `
+            <div class="mb-1 flex justify-between">
+                <span class="text-sm font-medium">${disease}</span>
+                <span class="text-sm font-medium">${percentage}%</span>
+            </div>
+            <div class="progress h-2 mb-1">
+                <div class="progress-bar ${color}" style="width: ${percentage}%"></div>
+            </div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">
+                $${amountInM} of $${goalInM}
+            </div>
+        `;
+        
+        contributionsList.appendChild(diseaseElement);
+    });
+}
         
         // Set up event listeners for forms and buttons
         function setupEventListeners() {
