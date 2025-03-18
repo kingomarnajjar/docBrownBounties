@@ -22,16 +22,16 @@
             --info: #3b82f6;
             --light: #f9fafb;
             --dark: #111827;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
+            --gray-50: rgba(240, 240, 240, 0.95);
+--gray-100: rgba(230, 230, 230, 0.9);
+--gray-200: rgba(210, 210, 210, 0.85);
+--gray-300: rgba(190, 190, 190, 0.8);
+--gray-400: rgba(150, 150, 150, 0.75);
+--gray-500: rgba(100, 100, 100, 0.8);
+--gray-600: rgba(70, 70, 70, 0.85);
+--gray-700: rgba(40, 40, 40, 0.9);
+--gray-800: rgba(20, 20, 20, 0.93);
+--gray-900: rgba(0, 0, 0, 0.95);
             --border-radius: 0.5rem;
             --box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             --transition: all 0.3s ease;
@@ -41,7 +41,7 @@
         body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: var(--gray-800);
-    background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fbackground%2F20210717%2Foriginal%2Fpngtree-rainbow-color-watercolor-splash-background-picture-image_1432682.jpg&f=1&nofb=1&ipt=147f08f444cac79a254d438fde517388709d33b5edff1bbe24696fd6d41db6fb&ipo=images');
+    background-image: url('https://radical.omar-c29.workers.dev/memes/splashback.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -52,9 +52,14 @@
 
         /* Dark Mode */
         body.dark-mode {
-            color: var(--gray-100);
-            background-color: var(--gray-900);
-        }
+    color: var(--gray-100);
+    background-image: url('https://radical.omar-c29.workers.dev/memes/splashbackblack.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    position: relative;
+}
+
 
         /* Container */
         .container {
@@ -63,15 +68,126 @@
             padding: 0 1rem;
         }
 
+        /* Table backgrounds in dark mode */
+.dark-mode .bg-white {
+    background-color: var(--gray-800);
+}
+
+.dark-mode tbody {
+    background-color: var(--gray-800);
+    color: var(--gray-200);
+}
+
+/* For the dashboard cards, ensure the gradient colors respect dark mode */
+.dark-mode .card.bg-gradient-to-br.from-blue-50.to-blue-100,
+.dark-mode .card.bg-gradient-to-br.from-purple-50.to-purple-100,
+.dark-mode .card.bg-gradient-to-br.from-green-50.to-green-100 {
+    background: none;
+}
+
+/* Apply the dark mode gradients properly */
+.dark-mode .card.bg-gradient-to-br.from-blue-50.to-blue-100 {
+    background-image: linear-gradient(to bottom right, rgba(30, 64, 175, 0.3), rgba(37, 99, 235, 0.2));
+}
+
+.dark-mode .card.bg-gradient-to-br.from-purple-50.to-purple-100 {
+    background-image: linear-gradient(to bottom right, rgba(126, 34, 206, 0.3), rgba(168, 85, 247, 0.2));
+}
+
+.dark-mode .card.bg-gradient-to-br.from-green-50.to-green-100 {
+    background-image: linear-gradient(to bottom right, rgba(6, 95, 70, 0.3), rgba(5, 150, 105, 0.2));
+}
+
+/* Fix for submission description and payment address in dark mode */
+.dark-mode .bg-gray-50 {
+    background-color: var(--gray-700);
+    color: var(--gray-200);
+}
+
+.dark-mode .p-4.bg-gray-50 {
+    background-color: var(--gray-700);
+    color: var(--gray-200);
+}
+
+.dark-mode .font-mono,
+.dark-mode code.font-mono {
+    background-color: var(--gray-700);
+    color: var(--gray-200);
+}
+
+/* For specifically fixing the payment address and description blocks */
+.dark-mode #submission-details .bg-gray-50,
+.dark-mode .whitespace-pre-line,
+.dark-mode .break-all {
+    background-color: var(--gray-700);
+    color: var(--gray-200);
+}
+
+/* Ensure code blocks within dark mode are properly styled */
+.dark-mode .p-4.bg-gray-50.rounded-lg {
+    background-color: var(--gray-700);
+    color: var(--gray-200);
+}
+
         /* Card/Section Styles */
-        .card {
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            transition: var(--transition);
-        }
+.card {
+    background-color: rgba(255, 255, 255, 0.658); /* Already has transparency */
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+/* Modal Styles */
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.85); /* Adding transparency here */
+    border-radius: var(--border-radius);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(-20px);
+    transition: var(--transition);
+}
+
+/* Form Controls - focus state */
+.form-control:focus {
+    color: var(--gray-800);
+    background-color: rgba(255, 255, 255, 0.9); /* Adding transparency here */
+    border-color: var(--primary-light);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(73, 247, 85, 0.25);
+}
+
+/* Contributions sidebar */
+.contributions-sidebar {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 100;
+    width: 280px;
+    background-color: rgba(255, 255, 255, 0.75); /* Adding transparency here */
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    transition: var(--transition);
+}
+
+/* Custom Radio/Checkboxes - before element */
+.custom-control-label::before {
+    position: absolute;
+    top: 0.25rem;
+    left: -1.5rem;
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    pointer-events: none;
+    content: "";
+    background-color: rgba(255, 255, 255, 0.8); /* Adding transparency here */
+    border: 1px solid var(--gray-300);
+}
 
         .dark-mode .card {
             background-color: var(--gray-800);
@@ -166,7 +282,7 @@
             font-size: 0.875rem;
             line-height: 1.25rem;
             color: var(--gray-700);
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.644);
             background-clip: padding-box;
             border: 1px solid var(--gray-300);
             border-radius: var(--border-radius);
@@ -179,13 +295,6 @@
             border-color: var(--gray-600);
         }
 
-        .form-control:focus {
-            color: var(--gray-800);
-            background-color: white;
-            border-color: var(--primary-light);
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
-        }
 
         .dark-mode .form-control:focus {
             color: var(--gray-100);
@@ -215,16 +324,6 @@
             pointer-events: auto;
         }
 
-        .modal-content {
-            background-color: white;
-            border-radius: var(--border-radius);
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: translateY(-20px);
-            transition: var(--transition);
-        }
 
         .dark-mode .modal-content {
             background-color: var(--gray-800);
@@ -293,19 +392,7 @@
         .bg-info { background-color: var(--info); }
 
         /* Layout Components */
-        .contributions-sidebar {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 100;
-            width: 280px;
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            max-height: calc(100vh - 100px);
-            overflow-y: auto;
-            transition: var(--transition);
-        }
+  
 
         .dark-mode .contributions-sidebar {
             background-color: var(--gray-800);
@@ -465,18 +552,7 @@
             vertical-align: top;
         }
 
-        .custom-control-label::before {
-            position: absolute;
-            top: 0.25rem;
-            left: -1.5rem;
-            display: block;
-            width: 1rem;
-            height: 1rem;
-            pointer-events: none;
-            content: "";
-            background-color: white;
-            border: 1px solid var(--gray-300);
-        }
+      
 
         .dark-mode .custom-control-label::before {
             background-color: var(--gray-700);
